@@ -1,3 +1,5 @@
+"use client";
+
 import { useToast } from "@/components/ui/use-toast";
 import {
   UserRegistrationProps,
@@ -5,9 +7,10 @@ import {
 } from "@/schemas/auth.schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSignUp } from "@clerk/nextjs";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { onCompleteUserRegistration } from "@/actions/auth";
 
 export const useSignUpForm = () => {
   const { toast } = useToast();
@@ -43,5 +46,59 @@ export const useSignUpForm = () => {
         description: error.errors[0].long,
       });
     }
+  };
+
+  const onHandleSubmit = methods.handleSubmit(
+    async (values: UserRegistrationProps) => {
+      if (!isLoaded) return;
+
+      try {
+        setLoading(true);
+        const completeSignUp = await signUp.attemptEmailAddressVerification({
+          code: values.otp,
+        });
+
+        if (completeSignUp.status !== "complete") {
+          return { message: "Something went wrong!" };
+        }
+
+        if (completeSignUp.status == "complete") {
+          if (!signUp.createdUserId) return;
+
+          const registered = await onCompleteUserRegistration(
+            values.fullname,
+            signUp.createdUserId,
+            values.type
+          );
+
+          if (registered?.status == 200 && registered.user) {
+            await setActive({
+              session: completeSignUp.createdSessionId,
+            });
+
+            setLoading(false);
+            router.push("/dashboard");
+          }
+
+          if (registered?.status == 400) {
+            toast({
+              title: "Error",
+              description: "Something went wrong!",
+            });
+          }
+        }
+      } catch (error: any) {
+        toast({
+          title: "Error",
+          description: error.errors[0].longMessage,
+        });
+      }
+    }
+  );
+  return {
+    methods,
+    onHandleSubmit,
+    onGenerateOTP,
+    loading,
   };
 };
