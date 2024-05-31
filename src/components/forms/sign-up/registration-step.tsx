@@ -12,12 +12,11 @@ const RegistrationFormStep = (props: Props) => {
     formState: { errors },
     setValue,
   } = useFormContext();
-
   const { currentStep } = useAuthContextHook();
-  const { onOTP, setOnOTP } = useState<string>("");
-  const { onUserType, setOnUserType } = useState<"owner" | "student">("owner");
+  const [onOTP, setOnOTP] = useState<string>("");
+  const [onUserType, setOnUserType] = useState<"owner" | "student">("owner");
 
-  setValue("onOTP", onOTP);
+  setValue("otp", onOTP);
 
   switch (currentStep) {
     case 1:
