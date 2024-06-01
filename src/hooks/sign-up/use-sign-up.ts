@@ -1,5 +1,4 @@
 "use client";
-
 import { useToast } from "@/components/ui/use-toast";
 import {
   UserRegistrationProps,
@@ -31,19 +30,20 @@ export const useSignUpForm = () => {
     onNext: React.Dispatch<React.SetStateAction<number>>
   ) => {
     if (!isLoaded) return;
+
     try {
       await signUp.create({
         emailAddress: email,
         password: password,
       });
 
-      await signUp.prepareEmailVerification({ strategy: "email_code" });
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
 
       onNext((prev) => prev + 1);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: error.errors[0].long,
+        description: error.errors[0].longMessage,
       });
     }
   };
