@@ -1,3 +1,4 @@
+import { SIDE_BAR_MENU } from '@/constants/menu';
 import { Menu } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
@@ -41,8 +42,9 @@ const MaxMenu = ({ current, onSignOut, onExpand, domains }: Props) => {
         <div className="flex flex-col">
           <p className="text-xs text-gray-500 mb-3">MENU</p>
           {SIDE_BAR_MENU.map((menu, key) => (
-            <MenuItem />
+            <MenuItem size="max" {...menu} key={key} current={current} />
           ))}
+          <DomainMenu domains={domains} />
         </div>
       </div>
     </div>
