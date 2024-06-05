@@ -1,11 +1,12 @@
-"use server";
+'use server';
 
-import { client } from "@/lib/prisma";
+import { client } from '@/lib/prisma';
+import { currentUser, redirectToSignIn } from '@clerk/nextjs';
 
 export const onCompleteUserRegistration = async (
   fullname: string,
   clerkId: string,
-  type: string
+  type: string,
 ) => {
   try {
     const registered = await client.user.create({
@@ -34,5 +35,35 @@ export const onCompleteUserRegistration = async (
     return {
       status: 400,
     };
+  }
+};
+
+export const onLoginUser = async () => {
+  const user = await currentUser();
+  if (!user) redirectToSignIn();
+  else {
+    try {
+      const authenticated = await client.user.findUnique({
+        where: {
+          clerkId: user.id,
+        },
+        select: {
+          id: true,
+          fullname: true,
+          type: true,
+        },
+      });
+      if (authenticated) {
+        const domain = await onGetAllAccountDomains();
+
+        return {
+          status: 200,
+          user: authenticated,
+          domain: domains?.domains,
+        };
+      }
+    } catch (error) {
+      return console.log(error);
+    }
   }
 };
