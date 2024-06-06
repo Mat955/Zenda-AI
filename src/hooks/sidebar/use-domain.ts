@@ -1,9 +1,8 @@
-import { useToast } from '@/components/ui/use-toast';
+import { toast, useToast } from '@/components/ui/use-toast';
 import { AddDomainSchema } from '@/schemas/settings.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UploadClient } from '@uploadcare/react-uploader';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { useRouter, usePathname } from 'next/navigation';
 import { useEffect } from 'react';
 import { Field, FieldValues, useForm } from 'react-hook-form';
 
@@ -15,7 +14,7 @@ export const useDomain = () => {
   const {
     register,
     handleSubmit,
-    formState: {},
+    formState: { errors },
     reset,
   } = useForm<FieldValues>({
     resolver: zodResolver(AddDomainSchema),
@@ -34,5 +33,24 @@ export const useDomain = () => {
   const onAddDomain = handleSubmit(async (values: FieldValues) => {
     setLoading(true);
     const uploaded = await upload.uploadFile(values.image[0]);
+    const domain = await onIntegrateDomain(values.domain, uploaded.uuid);
+
+    if (domain) {
+      reset();
+      setLoading(false);
+      toast({
+        title: domain.status === 200 ? 'Success' : 'Error',
+        message: domain.message,
+      });
+      router.refresh();
+    }
   });
+
+  return {
+    register,
+    onAddDomain,
+    loading,
+    isDomain,
+    errors,
+  };
 };
