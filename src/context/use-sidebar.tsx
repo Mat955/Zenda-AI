@@ -1,7 +1,6 @@
 'use client';
 import { useToast } from '@/components/ui/use-toast';
-import { usePathname } from 'next/navigation';
-import { useRouter } from 'next/router';
+import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useChatContext } from './user-chat-context';
 import {

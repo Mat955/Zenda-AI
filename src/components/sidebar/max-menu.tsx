@@ -1,8 +1,9 @@
 import { SIDE_BAR_MENU } from '@/constants/menu';
-import { Menu } from 'lucide-react';
+import { LogOut, Menu, MonitorSmartphone } from 'lucide-react';
 import Image from 'next/image';
 import React from 'react';
 import DomainMenu from './domain-menu';
+import MenuItem from './menu-item';
 
 type Props = {
   onExpand(): void;
@@ -46,6 +47,20 @@ const MaxMenu = ({ current, onSignOut, onExpand, domains }: Props) => {
             <MenuItem size="max" {...menu} key={key} current={current} />
           ))}
           <DomainMenu domains={domains} />
+        </div>
+        <div className="flex flex-col">
+          <p className="text-xs text-gray-500 mb-3">OPTIONS</p>
+          <MenuItem
+            size="max"
+            label="Sign Out"
+            icon={<LogOut />}
+            onSignOut={onSignOut}
+          />
+          <MenuItem
+            size="max"
+            label="Mobile App"
+            icon={<MonitorSmartphone />}
+          />
         </div>
       </div>
     </div>

@@ -3,6 +3,7 @@ import useSideBar from '@/context/use-sidebar';
 import { cn } from '@/lib/utils';
 import React from 'react';
 import MaxMenu from './max-menu';
+import { MinMenu } from './min-menu';
 
 type Props = {
   domains:
@@ -40,7 +41,7 @@ const SideBar = ({ domains }: Props) => {
           domains={domains}
           onShrink={onExpand}
           current={page!}
-          onSignOut
+          onSignOut={onSignOut}
         />
       )}
     </div>
