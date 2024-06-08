@@ -1,10 +1,10 @@
-import { currentUser } from '@clerk/nextjs';
+'use server';
 import { client } from '@/lib/prisma';
+import { clerkClient, currentUser } from '@clerk/nextjs';
 
 export const onIntegrateDomain = async (domain: string, icon: string) => {
   const user = await currentUser();
   if (!user) return;
-
   try {
     const subscription = await client.user.findUnique({
       where: {
@@ -23,7 +23,7 @@ export const onIntegrateDomain = async (domain: string, icon: string) => {
         },
       },
     });
-    const domainExist = await client.user.findFirst({
+    const domainExists = await client.user.findFirst({
       where: {
         clerkId: user.id,
         domains: {
@@ -33,13 +33,14 @@ export const onIntegrateDomain = async (domain: string, icon: string) => {
         },
       },
     });
-    if (!domainExist) {
+
+    if (!domainExists) {
       if (
-        (subscription?.subscription?.plan === 'STANDARD' &&
+        (subscription?.subscription?.plan == 'STANDARD' &&
           subscription._count.domains < 1) ||
-        (subscription?.subscription?.plan === 'PLUS' &&
+        (subscription?.subscription?.plan == 'PRO' &&
           subscription._count.domains < 5) ||
-        (subscription?.subscription?.plan === 'ULTIMATE' &&
+        (subscription?.subscription?.plan == 'ULTIMATE' &&
           subscription._count.domains < 10)
       ) {
         const newDomain = await client.user.update({
@@ -53,28 +54,27 @@ export const onIntegrateDomain = async (domain: string, icon: string) => {
                 icon,
                 chatBot: {
                   create: {
-                    welcomeMessage: 'Hey, there, have a question? Ask me!',
+                    welcomeMessage: 'Hey there, have  a question? Text us here',
                   },
                 },
               },
             },
           },
         });
+
         if (newDomain) {
-          return {
-            status: 200,
-            message: 'Domain added successfully',
-          };
+          return { status: 200, message: 'Domain successfully added' };
         }
       }
       return {
         status: 400,
-        message: 'You have reached the maximum limit of domains',
+        message:
+          "You've reached the maximum number of domains, upgrade your plan",
       };
     }
     return {
       status: 400,
-      message: 'Domain already exist',
+      message: 'Domain already exists',
     };
   } catch (error) {
     console.log(error);
@@ -108,7 +108,6 @@ export const onGetSubscriptionPlan = async () => {
 export const onGetAllAccountDomains = async () => {
   const user = await currentUser();
   if (!user) return;
-
   try {
     const domains = await client.user.findUnique({
       where: {
@@ -135,7 +134,6 @@ export const onGetAllAccountDomains = async () => {
         },
       },
     });
-
     return { ...domains };
   } catch (error) {
     console.log(error);
