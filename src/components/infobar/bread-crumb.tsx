@@ -35,7 +35,7 @@ const BreadCrumb = (props: Props) => {
         {page == 'settings'
           ? 'Manage your account settings, preferences and integrations'
           : page == 'dashboard'
-          ? 'A detailed overview of your metrics, usage, customers and more'
+          ? 'A detailed overview of your metrics, usage, customers and more in one place'
           : page == 'appointment'
           ? 'View and edit all your appointments'
           : page == 'email-marketing'
