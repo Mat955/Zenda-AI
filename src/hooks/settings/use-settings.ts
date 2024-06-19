@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import {
   onChatBotImageUpdate,
+  onCreateFilterQuestions,
   onCreateHelpDeskQuestion,
   onDeleteUserDomain,
+  onGetAllFilterQuestions,
   onGetAllHelpDeskQuestions,
   onUpdateDomain,
   onUpdatePassword,
@@ -20,6 +22,8 @@ import { useForm } from 'react-hook-form';
 import {
   DomainSettingsProps,
   DomainSettingsSchema,
+  FilterQuestionsProps,
+  FilterQuestionsSchema,
   HelpDeskQuestionsProps,
   HelpDeskQuestionsSchema,
 } from '@/schemas/settings.schema';
@@ -196,6 +200,59 @@ export const useHelpDesk = (id: string) => {
     register,
     onSubmitQuestion,
     errors,
+    isQuestions,
+    loading,
+  };
+};
+
+export const useFilterQuestions = (id: string) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<FilterQuestionsProps>({
+    resolver: zodResolver(FilterQuestionsSchema),
+  });
+
+  const { toast } = useToast();
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isQuestions, setQuestions] = useState<
+    { id: string; question: string }[]
+  >([]);
+
+  const onAddFilterQuestions = handleSubmit(async (values) => {
+    setLoading(true);
+    const question = await onCreateFilterQuestions(id, values.question);
+    if (question) {
+      setQuestions(question.questions!);
+      toast({
+        title: question.status == 200 ? 'Success' : 'Error',
+        description: question.message,
+      });
+      setLoading(false);
+      reset();
+    }
+  });
+
+  const onGetFilterQuestions = async () => {
+    setLoading(true);
+    const questions = await onGetAllFilterQuestions(id);
+    if (questions) {
+      setQuestions(questions.questions);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    onGetFilterQuestions();
+  }, []);
+
+  return {
+    register,
+    errors,
+    onAddFilterQuestions,
     isQuestions,
     loading,
   };

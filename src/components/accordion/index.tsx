@@ -1,10 +1,10 @@
 import React from 'react';
-import { Accordion as ShadcnAccordion } from '@/components/ui/accordion';
 import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@radix-ui/react-accordion';
+  Accordion as ShadcnAccordion,
+} from '@/components/ui/accordion';
 
 type Props = {
   trigger: string;
@@ -14,7 +14,7 @@ type Props = {
 const Accordion = ({ trigger, content }: Props) => {
   return (
     <ShadcnAccordion type="single" collapsible>
-      <AccordionItem>
+      <AccordionItem value="item-1">
         <AccordionTrigger>{trigger}</AccordionTrigger>
         <AccordionContent>{content}</AccordionContent>
       </AccordionItem>
