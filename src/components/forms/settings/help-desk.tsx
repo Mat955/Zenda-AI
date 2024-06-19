@@ -1,8 +1,17 @@
 'use client';
 import { Section } from '@/components/section-label';
-import { Card, CardContent, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardTitle,
+} from '@/components/ui/card';
 import { useHelpDesk } from '@/hooks/settings/use-settings';
 import React from 'react';
+import FormGenerator from '../sign-up/form-generator';
+import { Button } from '@/components/ui/button';
+import { Loader } from '@/components/loader';
+import Accordion from '@/components/accordion';
 
 type Props = {
   id: string;
@@ -21,8 +30,54 @@ const HelpDesk = ({ id }: Props) => {
               label="Question"
               message="Add a question that you believe is frequently asked."
             />
+            <FormGenerator
+              inputType="input"
+              register={register}
+              errors={errors}
+              form="help-desk-form"
+              name="question"
+              placeholder="Enter question"
+              type="text"
+            />
           </div>
+          <div className="flex flex-col gap-3">
+            <Section
+              label="Answer to the question"
+              message="Add an answer to the question you have added."
+            />
+            <FormGenerator
+              inputType="textarea"
+              register={register}
+              errors={errors}
+              form="help-desk-form"
+              name="answer"
+              placeholder="Enter answer"
+              type="text"
+              lines={5}
+            />
+          </div>
+          <Button
+            type="submit"
+            className="bg-orange hover:bg-orange hover:opacity-70 transition duration-150 ease-in-out text-white font-semibold"
+          >
+            Create
+          </Button>
         </form>
+      </CardContent>
+      <CardContent className="p-6 overflow-y-auto chat-window">
+        <Loader loading={loading}>
+          {isQuestions.length ? (
+            isQuestions.map((question) => (
+              <Accordion
+                key={question.id}
+                trigger={question.question}
+                content={question.answer}
+              />
+            ))
+          ) : (
+            <CardDescription>No Questions</CardDescription>
+          )}
+        </Loader>
       </CardContent>
     </Card>
   );

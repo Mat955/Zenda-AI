@@ -192,8 +192,6 @@ export const useHelpDesk = (id: string) => {
     onGetQuestions();
   }, []);
 
-  // film 4:32
-
   return {
     register,
     onSubmitQuestion,
