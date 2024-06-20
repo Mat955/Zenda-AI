@@ -30,7 +30,7 @@ const ConversationMenu = ({ domains }: Props) => {
           <ConversationSearch domains={domains} register={register} />
           <div className="flex flex-col">
             <Loader loading={loading}>
-              {chatRooms ? (
+              {chatRooms.length ? (
                 chatRooms.map((room) => (
                   <ChatCard
                     seen={room.chatRoom[0].message[0]?.seen}
@@ -48,6 +48,9 @@ const ConversationMenu = ({ domains }: Props) => {
             </Loader>
           </div>
         </TabsContent>
+        <TabsContent value="all">All</TabsContent>
+        <TabsContent value="expired">expired</TabsContent>
+        <TabsContent value="starred">starred</TabsContent>
       </TabsMenu>
     </div>
   );

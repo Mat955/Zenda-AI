@@ -1,9 +1,30 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import PusherServer from 'pusher';
+import PusherClient from 'pusher-js';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+//WIP: TO DO
+export const pusherServer = {};
+// new pusherServer({
+//   appId: process.env.PUSHER_APP_ID as string,
+//   key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
+//   secret: process.env.PUSHER_APP_SECRET as string,
+//   cluster: 'mt1',
+//   useTLS: true,
+// });
+
+//WIP: TO DO
+export const pusherClient = {};
+// new pusherClient(
+//   process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
+//   {
+//     cluster: 'mt1',
+//   },
+// );
 
 export const extractUUIDFromString = (url: string) => {
   return url.match(

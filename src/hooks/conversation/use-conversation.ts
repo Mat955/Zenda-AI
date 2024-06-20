@@ -1,11 +1,16 @@
 import {
   onGetChatMessages,
   onGetDomainChatRooms,
+  onOwnerSendMessage,
+  onRealTimeChat,
   onViewUnReadMessages,
 } from '@/actions/conversation';
 import { useChatContext } from '@/context/user-chat-context';
-import { getMonthName } from '@/lib/utils';
-import { ConversationSearchSchema } from '@/schemas/conversation.schema';
+import { getMonthName, pusherClient } from '@/lib/utils';
+import {
+  ChatBotMessageSchema,
+  ConversationSearchSchema,
+} from '@/schemas/conversation.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { use, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -118,5 +123,70 @@ export const useChatTime = (createdAt: Date, roomId: string) => {
     messageSentAt,
     urgent,
     onSeenChat,
+  };
+};
+
+export const useChatWindow = () => {
+  const { chats, loading, setChats, chatRoom } = useChatContext();
+  const messageWindowRef = useRef<HTMLDivElement | null>(null);
+  const { register, handleSubmit, reset } = useForm({
+    mode: 'onChange',
+    resolver: zodResolver(ChatBotMessageSchema),
+  });
+
+  const onScrollToBottom = () => {
+    messageWindowRef.current?.scrollTo({
+      top: messageWindowRef.current.scrollHeight,
+      behavior: 'smooth',
+      left: 0,
+    });
+  };
+
+  useEffect(() => {
+    onScrollToBottom();
+  }, [chats, messageWindowRef]);
+
+  // WIP: Setup Pusher client for real-time chat
+
+  // useEffect(() => {
+  //   if (chatRoom) {
+  //     pusherClient.subscribe(chatRoom);
+  //     pusherClient.bind('realtime-mode', (data: any) => {
+  //       setChats((prev) => [...prev, data.chat]);
+  //     });
+
+  //     return () => pusherClient.unsubscribe('realtime-mode');
+  //   }
+  // }, [chatRoom]);
+
+  const onHandleSentMessage = async (values) => {
+    try {
+      const message = await onOwnerSendMessage(
+        chatRoom!,
+        values.content,
+        'assistant',
+      );
+
+      if (message) {
+        setChats((prev) => [...prev, message.message[0]]);
+        // WIP: Uncomment this when pusher is setup
+        // await onRealTimeChat(
+        //   chatRoom!,
+        //   message.message[0].message,
+        //   message.message[0].id,
+        //   'assistant',
+        // );
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return {
+    messageWindowRef,
+    chats,
+    loading,
+    chatRoom,
+    onHandleSentMessage,
+    register,
   };
 };
