@@ -14,7 +14,7 @@ import { useToast } from '@/components/ui/use-toast';
 import {
   ChangePasswordProps,
   ChangePasswordSchema,
-} from '@/schemas/auth.schemas';
+} from '@/schemas/auth.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UploadClient } from '@uploadcare/upload-client';
 import { useTheme } from 'next-themes';

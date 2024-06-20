@@ -1,15 +1,15 @@
-"use client";
-import { useToast } from "@/components/ui/use-toast";
+'use client';
+import { useToast } from '@/components/ui/use-toast';
 import {
   UserRegistrationProps,
   UserRegistrationSchema,
-} from "@/schemas/auth.schemas";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useSignUp } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { onCompleteUserRegistration } from "@/actions/auth";
+} from '@/schemas/auth.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useSignUp } from '@clerk/nextjs';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { onCompleteUserRegistration } from '@/actions/auth';
 
 export const useSignUpForm = () => {
   const { toast } = useToast();
@@ -19,15 +19,15 @@ export const useSignUpForm = () => {
   const methods = useForm<UserRegistrationProps>({
     resolver: zodResolver(UserRegistrationSchema),
     defaultValues: {
-      type: "owner",
+      type: 'owner',
     },
-    mode: "onChange",
+    mode: 'onChange',
   });
 
   const onGenerateOTP = async (
     email: string,
     password: string,
-    onNext: React.Dispatch<React.SetStateAction<number>>
+    onNext: React.Dispatch<React.SetStateAction<number>>,
   ) => {
     if (!isLoaded) return;
 
@@ -37,12 +37,12 @@ export const useSignUpForm = () => {
         password: password,
       });
 
-      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
 
       onNext((prev) => prev + 1);
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: 'Error',
         description: error.errors[0].longMessage,
       });
     }
@@ -58,17 +58,17 @@ export const useSignUpForm = () => {
           code: values.otp,
         });
 
-        if (completeSignUp.status !== "complete") {
-          return { message: "Something went wrong!" };
+        if (completeSignUp.status !== 'complete') {
+          return { message: 'Something went wrong!' };
         }
 
-        if (completeSignUp.status == "complete") {
+        if (completeSignUp.status == 'complete') {
           if (!signUp.createdUserId) return;
 
           const registered = await onCompleteUserRegistration(
             values.fullname,
             signUp.createdUserId,
-            values.type
+            values.type,
           );
 
           if (registered?.status == 200 && registered.user) {
@@ -77,23 +77,23 @@ export const useSignUpForm = () => {
             });
 
             setLoading(false);
-            router.push("/dashboard");
+            router.push('/dashboard');
           }
 
           if (registered?.status == 400) {
             toast({
-              title: "Error",
-              description: "Something went wrong!",
+              title: 'Error',
+              description: 'Something went wrong!',
             });
           }
         }
       } catch (error: any) {
         toast({
-          title: "Error",
+          title: 'Error',
           description: error.errors[0].longMessage,
         });
       }
-    }
+    },
   );
   return {
     methods,
