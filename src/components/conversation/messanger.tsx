@@ -1,6 +1,11 @@
 'use client';
 import React from 'react';
 import { Loader } from '../loader';
+import Bubble from '../chatbot/bubble';
+import { useChatWindow } from '@/hooks/conversation/use-conversation';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import { PaperclipIcon } from 'lucide-react';
 
 type Props = {};
 
@@ -38,6 +43,24 @@ const Messanger = (props: Props) => {
           </div>
         </Loader>
       </div>
+      <form
+        onSubmit={onHandleSentMessage}
+        className="flex px-3 pt-3 pb-10 flex-col backdrop-blur-sm bg-muted w-full"
+      >
+        <div className="flex justify-between">
+          <Input
+            {...register('content')}
+            placeholder="Type a message..."
+            className="focus-visible:ring-0 flex-1 p-0 focus-visible:ring-offset-0 bg-muted rounded-none outline-none border-none"
+          />
+          <Button type="submit" className="mt-3 px-7">
+            Send
+          </Button>
+        </div>
+        <span>
+          <PaperclipIcon width={18} className="text-muted-foreground" />
+        </span>
+      </form>
     </div>
   );
 };

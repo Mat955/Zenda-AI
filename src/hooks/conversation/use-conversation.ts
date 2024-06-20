@@ -12,7 +12,7 @@ import {
   ConversationSearchSchema,
 } from '@/schemas/conversation.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { use, useEffect, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 export const useConversation = () => {

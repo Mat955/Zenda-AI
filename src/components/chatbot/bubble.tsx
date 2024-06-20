@@ -1,7 +1,9 @@
-import { cn, extractUUIDFromString } from '@/lib/utils';
+import { cn, extractUUIDFromString, getMonthName } from '@/lib/utils';
 import React from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { User } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 type Props = {
   message: {
@@ -37,6 +39,50 @@ const Bubble = ({ message, createdAt }: Props) => {
           </AvatarFallback>
         </Avatar>
       )}
+      <div
+        className={cn(
+          'flex flex-col gap-3 min-w-[200px] max-w-[300px] p-4 rounded-t-md',
+          message.role === 'assistant'
+            ? 'bg-muted rounded-r-md'
+            : 'bg-grandis rounded-l-md',
+        )}
+      >
+        {createdAt ? (
+          <div className="flex gap-2 text-sm text-gray-600">
+            <p>
+              {createdAt.getDate()} {getMonthName(createdAt.getMonth())}
+            </p>
+            <p>
+              {createdAt.getHours()}:{createdAt.getMinutes()}
+              {createdAt.getHours() > 12 ? 'PM' : 'AM'}
+            </p>
+          </div>
+        ) : (
+          <p className="text-sm">
+            {`${date.getHours()}:${date.getMinutes()} ${
+              date.getHours() > 12 ? 'PM' : 'AM'
+            }`}
+          </p>
+        )}
+        {image ? (
+          <div className="relative aspect-square">
+            <Image src={`https://ucarecdn.com/${image[0]}/`} fill alt="image" />
+          </div>
+        ) : (
+          <p className="text-sm">
+            {message.content.replace('(complete)', ' ')}
+            {message.link && (
+              <Link
+                className="underline font-bold pl-2"
+                href={message.link}
+                target="_blank"
+              >
+                Your Link
+              </Link>
+            )}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
