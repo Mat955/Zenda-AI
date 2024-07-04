@@ -146,7 +146,7 @@ export const useChatWindow = () => {
     onScrollToBottom();
   }, [chats, messageWindowRef]);
 
-  // WIP: Setup Pusher client for real-time chat
+  // WIP: Setup Pusher client for real-time chat messaging
 
   // useEffect(() => {
   //   if (chatRoom) {
