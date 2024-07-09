@@ -170,12 +170,12 @@ export const useChatWindow = () => {
       if (message) {
         setChats((prev) => [...prev, message.message[0]]);
         // WIP: Uncomment this when pusher is setup
-        // await onRealTimeChat(
-        //   chatRoom!,
-        //   message.message[0].message,
-        //   message.message[0].id,
-        //   'assistant',
-        // );
+        await onRealTimeChat(
+          chatRoom!,
+          message.message[0].message,
+          message.message[0].id,
+          'assistant',
+        );
       }
     } catch (error) {
       console.log(error);
