@@ -4,20 +4,20 @@ import { UseFormRegister } from 'react-hook-form';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import RealTimeMode from './real-time';
 import Image from 'next/image';
-import TabsMenu from '../tabs/intex';
+import TabsMenu from '../tabs/index';
 import { BOT_TABS_MENU } from '@/constants/menu';
 import ChatIcon from '@/icons/chat-icon';
 import { TabsContent } from '../ui/tabs';
 import { Separator } from '../ui/separator';
 import Bubble from './bubble';
-import { Responding } from './responding';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Paperclip, Send } from 'lucide-react';
 import { Label } from '../ui/label';
 import { CardDescription, CardTitle } from '../ui/card';
-import Accordion from '../accordian';
 import UploadButton from '../upload-button';
+import { Responding } from './responding';
+import Accordion from '../accordion';
 
 type Props = {
   errors: any;
@@ -101,7 +101,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
             />
           </div>
         </div>
-        {/* <TabsMenu
+        <TabsMenu
           triggers={BOT_TABS_MENU}
           className=" bg-transparent border-[1px] border-border m-2"
         >
@@ -169,8 +169,8 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
           </TabsContent>
         </TabsMenu>
         <div className="flex justify-center ">
-          <p className="text-gray-400 text-xs">Powered By ematprodev</p>
-        </div> */}
+          <p className="text-gray-400 text-xs">Powered By ematpro.dev</p>
+        </div>
       </div>
     );
   },
