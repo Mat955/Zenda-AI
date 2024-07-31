@@ -1,5 +1,5 @@
-import { onGetCurrentChatBot } from '@/actions/bot';
-import { postToParent } from '@/lib/utils';
+import { onAiChatBotAssistant, onGetCurrentChatBot } from '@/actions/bot';
+import { postToParent, pusherClient } from '@/lib/utils';
 import {
   ChatBotMessageProps,
   ChatBotMessageSchema,
@@ -113,12 +113,98 @@ export const useChatBot = () => {
         },
       ]);
       setOnAiTyping(true);
-      const reponse = await onAiChatBotAssistant(
+      const response = await onAiChatBotAssistant(
         currentBotId!,
         onChats,
         'user',
         uploaded.uuid,
       );
+
+      if (response) {
+        setOnAiTyping(false);
+        if (response.live) {
+          setOnRealTime((prev) => ({
+            ...prev,
+            chatroom: response.chatRoom,
+            mode: response.live,
+          }));
+        } else {
+          setOnChats((prev: any) => [...prev, response.response]);
+        }
+      }
+    }
+    if (values.content) {
+      setOnChats((prev: any) => [
+        ...prev,
+        {
+          role: 'user',
+          content: values.content,
+        },
+      ]);
+      setOnAiTyping(true);
+
+      const response = await onAiChatBotAssistant(
+        currentBotId!,
+        onChats,
+        'user',
+        values.content,
+      );
+
+      if (response) {
+        setOnAiTyping(false);
+        if (response.live) {
+          setOnRealTime((prev) => ({
+            ...prev,
+            chatroom: response.chatRoom,
+            mode: response.live,
+          }));
+        } else {
+          setOnChats((prev: any) => [...prev, response.response]);
+        }
+      }
     }
   });
+
+  return {
+    botOpened,
+    onOpenChatBot,
+    onStartChatting,
+    onChats,
+    register,
+    onAiTyping,
+    messageWindowRef,
+    currentBot,
+    loading,
+    setOnChats,
+    onRealTime,
+  };
 };
+
+// export const useRealTime = (
+//   chatRoomId: string,
+//   setChats: React.Dispatch<
+//     React.SetStateAction<
+//       {
+//         role: 'user' | 'assistant';
+//         content: string;
+//         link?: string | undefined;
+//       }[]
+//     >
+//   >,
+// ) => {
+//   useEffect(() => {
+//     pusherClient.subscribe(chatRoom);
+//     pusherClient.bind('realtime-mode', (data: any) => {
+//       setChats((prev: any) => [
+//         ...prev,
+//         {
+//           role: data.chat.role,
+//           content: data.chat.content,
+//         },
+//       ]);
+//     });
+//     return () => {
+//       pusherClient.unsubscribe('realtime-mode');
+//     };
+//   }, []);
+// };
