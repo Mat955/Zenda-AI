@@ -1,20 +1,22 @@
 'use client';
 
 import { USER_LOGIN_FORM } from '@/constants/forms';
-import React from 'react'
+import React from 'react';
 import { useFormContext } from 'react-hook-form';
-import FormGenerator from '../sign-up/form-generator';
+import FormGenerator from '../form-generator';
 
-type Props = {}
+type Props = {};
 
 const LoginForm = (props: Props) => {
-
-  const {register, formState: {errors}} = useFormContext()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
     <>
-      <h2 className='text-gravel md:text-4xl font-bold'>Login</h2>
-      <p className='text-iridium md:text-sm'>
+      <h2 className="text-gravel md:text-4xl font-bold">Login</h2>
+      <p className="text-iridium md:text-sm">
         You will receive a one time passowrd
       </p>
       {USER_LOGIN_FORM.map((field) => (
@@ -27,7 +29,7 @@ const LoginForm = (props: Props) => {
         />
       ))}
     </>
-  )
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;

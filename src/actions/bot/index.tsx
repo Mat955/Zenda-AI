@@ -4,7 +4,7 @@ import { client } from '@/lib/prisma';
 import { extractEmailsFromString, extractURLfromString } from '@/lib/utils';
 import { onRealTimeChat } from '../conversation';
 import { clerkClient } from '@clerk/nextjs';
-import { onMailer } from './mailer';
+import { onMailer } from '../mailer';
 import OpenAi from 'openai';
 
 const openai = new OpenAi({

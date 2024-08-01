@@ -4,7 +4,7 @@ import React from 'react';
 import AppDrawer from '../drawer';
 import { Plus } from 'lucide-react';
 import { Loader } from '../loader';
-import FormGenerator from '../forms/sign-up/form-generator';
+import FormGenerator from '../forms/form-generator';
 import UploadButton from '../upload-button';
 import { Button } from '../ui/button';
 import Link from 'next/link';

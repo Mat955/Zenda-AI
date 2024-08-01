@@ -1,6 +1,6 @@
 import React from 'react';
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
-import FormGenerator from '../sign-up/form-generator';
+import FormGenerator from '../form-generator';
 
 type DomainUpdateProps = {
   name: string;

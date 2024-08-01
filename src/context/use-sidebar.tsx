@@ -1,7 +1,8 @@
 'use client';
 import { useToast } from '@/components/ui/use-toast';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { useEffect, useState } from 'react';
 import { useChatContext } from './user-chat-context';
 import {
   onGetConversationMode,
@@ -23,7 +24,7 @@ const useSideBar = () => {
     try {
       const realtime = await onToggleRealtime(
         chatRoom!,
-        (e.target.ariaChecked = 'true' ? 'false' : true),
+        e.target.ariaChecked == 'true' ? false : true,
       );
       if (realtime) {
         setRealtime(realtime.chatRoom.live);
@@ -56,6 +57,7 @@ const useSideBar = () => {
   const { signOut } = useClerk();
 
   const onSignOut = () => signOut(() => router.push('/'));
+
   const onExpand = () => setExpand((prev) => !prev);
 
   return {
@@ -63,8 +65,9 @@ const useSideBar = () => {
     onExpand,
     page,
     onSignOut,
-    onActivateRealtime,
     realtime,
+    onActivateRealtime,
+    chatRoom,
     loading,
   };
 };

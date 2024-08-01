@@ -8,17 +8,17 @@ export const onMailer = (email: string) => {
     secure: true,
     auth: {
       user: process.env.NODE_MAILER_EMAIL,
-      pass: process.env.NODE_MAILER_GMAIL_APP_PASSOWRD,
+      pass: process.env.NODE_MAILER_GMAIL_APP_PASSWORD,
     },
   });
 
   const mailOptions = {
     to: email,
     subject: 'Realtime Support',
-    text: 'One of your customers on Zenda AI, just switched to realtime mode',
+    text: 'One of your customers on Corinna, just switched to realtime mode',
   };
 
-  transporter.sendMail(mailOptions, (error, info) => {
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
     } else {

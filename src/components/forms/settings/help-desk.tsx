@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/card';
 import { useHelpDesk } from '@/hooks/settings/use-settings';
 import React from 'react';
-import FormGenerator from '../sign-up/form-generator';
+import FormGenerator from '../form-generator';
 import { Button } from '@/components/ui/button';
 import { Loader } from '@/components/loader';
 import Accordion from '@/components/accordion';

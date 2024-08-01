@@ -42,7 +42,6 @@ export const onGetConversationMode = async (id: string) => {
         live: true,
       },
     });
-
     console.log(mode);
     return mode;
   } catch (error) {

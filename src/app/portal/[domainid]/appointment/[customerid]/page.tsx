@@ -5,12 +5,7 @@ import {
 import PortalForm from '@/components/forms/portal/portal-form';
 import React from 'react';
 
-type Props = {
-  params: {
-    domainid: string;
-    customerid: string;
-  };
-};
+type Props = { params: { domainid: string; customerid: string } };
 
 const CustomerSignUpForm = async ({ params }: Props) => {
   const questions = await onDomainCustomerResponses(params.customerid);
@@ -25,7 +20,7 @@ const CustomerSignUpForm = async ({ params }: Props) => {
       domainid={params.domainid}
       customerId={params.customerid}
       questions={questions.questions}
-      type="appointment"
+      type="Appointment"
     />
   );
 };

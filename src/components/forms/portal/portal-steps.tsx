@@ -1,5 +1,8 @@
 import React from 'react';
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
+import QuestionsForm from './questions';
+import BookAppointmentDate from './booking-date';
+import PaymentCheckout from './product-checkout';
 
 type Props = {
   questions: {
@@ -42,18 +45,65 @@ const PortalSteps = ({
   error,
   onNext,
   step,
-  date,
   onBooking,
+  date,
   onBack,
   onSlot,
-  slot,
   loading,
-  bookings,
+  slot,
   products,
+  bookings,
   amount,
   stripeId,
 }: Props) => {
-  return <div>PortalSteps</div>;
+  console.log(step);
+  if (step == 1) {
+    return (
+      <QuestionsForm
+        register={register}
+        error={error}
+        onNext={onNext}
+        questions={questions}
+      />
+    );
+  }
+
+  //   if (step == 2 && type == 'Appointment') {
+  //     return (
+  //       <BookAppointmentDate
+  //         date={date}
+  //         bookings={bookings}
+  //         currentSlot={slot}
+  //         register={register}
+  //         onBack={onBack}
+  //         onBooking={onBooking}
+  //         onSlot={onSlot}
+  //         loading={loading}
+  //       />
+  //     );
+  //   }
+
+  //   if (step == 2 && type == 'Payment') {
+  //     return (
+  //       <PaymentCheckout
+  //         products={products}
+  //         stripeId={stripeId}
+  //         onBack={onBack}
+  //         onNext={onNext}
+  //         amount={amount}
+  //       />
+  //     );
+  //   }
+
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <h2 className="font-bold text-gray-600 text-4xl">Thank You</h2>
+      <p className="text-center">
+        Thank you for taking the time to fill in this form. We look forward to
+        <br /> speaking to you soon.
+      </p>
+    </div>
+  );
 };
 
 export default PortalSteps;

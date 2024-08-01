@@ -2,7 +2,7 @@
 import { useChangePassword } from '@/hooks/settings/use-settings';
 import React from 'react';
 import { Section } from '../section-label';
-import FormGenerator from '../forms/sign-up/form-generator';
+import FormGenerator from '../forms/form-generator';
 import { Button } from '../ui/button';
 import { Loader } from '../loader';
 
