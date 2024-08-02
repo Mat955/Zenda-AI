@@ -68,20 +68,20 @@ const PortalSteps = ({
     );
   }
 
-  //   if (step == 2 && type == 'Appointment') {
-  //     return (
-  //       <BookAppointmentDate
-  //         date={date}
-  //         bookings={bookings}
-  //         currentSlot={slot}
-  //         register={register}
-  //         onBack={onBack}
-  //         onBooking={onBooking}
-  //         onSlot={onSlot}
-  //         loading={loading}
-  //       />
-  //     );
-  //   }
+  if (step == 2 && type == 'Appointment') {
+    return (
+      <BookAppointmentDate
+        date={date}
+        bookings={bookings}
+        currentSlot={slot}
+        register={register}
+        onBack={onBack}
+        onBooking={onBooking}
+        onSlot={onSlot}
+        loading={loading}
+      />
+    );
+  }
 
   //   if (step == 2 && type == 'Payment') {
   //     return (
