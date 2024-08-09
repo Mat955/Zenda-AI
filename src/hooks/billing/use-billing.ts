@@ -8,7 +8,7 @@ export const useStripe = () => {
   const onStripeConnect = async () => {
     try {
       setOnStripeAccountPending(true);
-      const account = await axios.get('/api/stripe/connect');
+      const account = await axios.get(`/api/stripe/connect`);
 
       if (account) {
         setOnStripeAccountPending(false);
