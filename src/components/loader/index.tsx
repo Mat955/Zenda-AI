@@ -12,14 +12,14 @@ type LoaderProps = {
 export const Loader = ({
   loading,
   children,
-  className,
   noPadding,
+  className,
 }: LoaderProps) => {
   return loading ? (
     <div className={cn(className || 'w-full py-5 flex justify-center')}>
       <Spinner noPadding={noPadding} />
     </div>
   ) : (
-    <>{children}</>
+    children
   );
 };

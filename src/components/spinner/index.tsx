@@ -1,5 +1,5 @@
-import { cn } from "@/lib/utils";
-import React from "react";
+import { cn } from '@/lib/utils';
+import React from 'react';
 
 type SpinnerProps = {
   noPadding?: boolean;
@@ -7,7 +7,7 @@ type SpinnerProps = {
 
 export const Spinner = ({ noPadding }: SpinnerProps) => {
   return (
-    <div className={cn("w-full flex justify-center", noPadding ? "" : "py-10")}>
+    <div className={cn('w-full flex justify-center', noPadding ? '' : 'py-10')}>
       <div role="status">
         <svg
           aria-hidden="true"

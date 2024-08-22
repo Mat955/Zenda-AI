@@ -1,5 +1,5 @@
-import axios from 'axios';
 import { useState } from 'react';
+import axios from 'axios';
 
 export const useStripe = () => {
   const [onStripeAccountPending, setOnStripeAccountPending] =
@@ -9,10 +9,8 @@ export const useStripe = () => {
     try {
       setOnStripeAccountPending(true);
       const account = await axios.get(`/api/stripe/connect`);
-
       if (account) {
         setOnStripeAccountPending(false);
-
         if (account) {
           window.location.href = account.data.url;
         }
@@ -21,6 +19,5 @@ export const useStripe = () => {
       console.log(error);
     }
   };
-
   return { onStripeConnect, onStripeAccountPending };
 };
