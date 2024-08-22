@@ -1,21 +1,29 @@
+'use client';
+
 import React from 'react';
-import FormGenerator from '../forms/form-generator';
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
-import { UploadIcon } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
+
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+
 import { ErrorMessage } from '@hookform/error-message';
-import { Button } from '../ui/button';
-import { Loader } from '../loader';
+import { Loader } from '@/components/loader';
+import FormGenerator from '../forms/form-generator';
+import { UploadIcon } from 'lucide-react';
+import { useProducts } from '@/hooks/settings/use-settings';
 
 type CreateProductFormProps = {
   id: string;
 };
 
-const CreateProductForm = ({ id }: CreateProductFormProps) => {
+export const CreateProductForm = ({ id }: CreateProductFormProps) => {
   const { onCreateNewProduct, register, errors, loading } = useProducts(id);
-
   return (
-    <form className="mt-3 w-full flex flex-col gap-5 py-10">
+    <form
+      className="mt-3 w-full flex flex-col gap-5 py-10"
+      onSubmit={onCreateNewProduct}
+    >
       <FormGenerator
         inputType="input"
         register={register}
@@ -43,8 +51,8 @@ const CreateProductForm = ({ id }: CreateProductFormProps) => {
           errors={errors}
           name="image"
           render={({ message }) => (
-            <p className="text-red-500 text-sm mt-2">
-              {message === 'Require' ? '' : message}
+            <p className="text-red-400 mt-2">
+              {message === 'Required' ? '' : message}
             </p>
           )}
         />
@@ -64,5 +72,3 @@ const CreateProductForm = ({ id }: CreateProductFormProps) => {
     </form>
   );
 };
-
-export default CreateProductForm;

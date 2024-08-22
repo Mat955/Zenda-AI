@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react';
 import {
   onChatBotImageUpdate,
   onCreateFilterQuestions,
   onCreateHelpDeskQuestion,
+  onCreateNewDomainProduct,
   onDeleteUserDomain,
   onGetAllFilterQuestions,
   onGetAllHelpDeskQuestions,
@@ -15,11 +15,9 @@ import {
   ChangePasswordProps,
   ChangePasswordSchema,
 } from '@/schemas/auth.schema';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { UploadClient } from '@uploadcare/upload-client';
-import { useTheme } from 'next-themes';
-import { useForm } from 'react-hook-form';
 import {
+  AddProductProps,
+  AddProductSchema,
   DomainSettingsProps,
   DomainSettingsSchema,
   FilterQuestionsProps,
@@ -27,16 +25,23 @@ import {
   HelpDeskQuestionsProps,
   HelpDeskQuestionsSchema,
 } from '@/schemas/settings.schema';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { UploadClient } from '@uploadcare/upload-client';
+import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import { set } from 'date-fns';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const upload = new UploadClient({
   publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
 });
 
 export const useThemeMode = () => {
-  const { theme, setTheme } = useTheme();
-  return { theme, setTheme };
+  const { setTheme, theme } = useTheme();
+  return {
+    setTheme,
+    theme,
+  };
 };
 
 export const useChangePassword = () => {
@@ -59,10 +64,7 @@ export const useChangePassword = () => {
       if (updated) {
         reset();
         setLoading(false);
-        toast({
-          title: 'Password Updated',
-          description: updated.message,
-        });
+        toast({ title: 'Success', description: updated.message });
       }
     } catch (error) {
       console.log(error);
@@ -87,7 +89,6 @@ export const useSettings = (id: string) => {
   });
   const router = useRouter();
   const { toast } = useToast();
-
   const [loading, setLoading] = useState<boolean>(false);
   const [deleting, setDeleting] = useState<boolean>(false);
 
@@ -95,10 +96,9 @@ export const useSettings = (id: string) => {
     setLoading(true);
     if (values.domain) {
       const domain = await onUpdateDomain(id, values.domain);
-
       if (domain) {
         toast({
-          title: 'Domain Updated',
+          title: 'Success',
           description: domain.message,
         });
       }
@@ -108,17 +108,17 @@ export const useSettings = (id: string) => {
       const image = await onChatBotImageUpdate(id, uploaded.uuid);
       if (image) {
         toast({
-          title: image.status === 200 ? 'Image Updated' : 'Error',
+          title: image.status == 200 ? 'Success' : 'Error',
           description: image.message,
         });
         setLoading(false);
       }
     }
     if (values.welcomeMessage) {
-      const message = await onUpdateWelcomeMessage(id, values.welcomeMessage);
+      const message = await onUpdateWelcomeMessage(values.welcomeMessage, id);
       if (message) {
         toast({
-          title: 'Welcome Message Updated',
+          title: 'Success',
           description: message.message,
         });
       }
@@ -133,7 +133,7 @@ export const useSettings = (id: string) => {
     const deleted = await onDeleteUserDomain(id);
     if (deleted) {
       toast({
-        title: 'Domain Deleted',
+        title: 'Success',
         description: deleted.message,
       });
       setDeleting(false);
@@ -142,10 +142,10 @@ export const useSettings = (id: string) => {
   };
   return {
     register,
-    errors,
     onUpdateSettings,
-    onDeleteDomain,
+    errors,
     loading,
+    onDeleteDomain,
     deleting,
   };
 };
@@ -214,46 +214,82 @@ export const useFilterQuestions = (id: string) => {
   } = useForm<FilterQuestionsProps>({
     resolver: zodResolver(FilterQuestionsSchema),
   });
-
   const { toast } = useToast();
-
   const [loading, setLoading] = useState<boolean>(false);
-  const [isQuestions, setQuestions] = useState<
+  const [isQuestions, setIsQuestions] = useState<
     { id: string; question: string }[]
   >([]);
 
   const onAddFilterQuestions = handleSubmit(async (values) => {
     setLoading(true);
-    const question = await onCreateFilterQuestions(id, values.question);
-    if (question) {
-      setQuestions(question.questions!);
+    const questions = await onCreateFilterQuestions(id, values.question);
+    if (questions) {
+      setIsQuestions(questions.questions!);
       toast({
-        title: question.status == 200 ? 'Success' : 'Error',
-        description: question.message,
+        title: questions.status == 200 ? 'Success' : 'Error',
+        description: questions.message,
       });
-      setLoading(false);
       reset();
+      setLoading(false);
     }
   });
 
-  const onGetFilterQuestions = async () => {
+  const onGetQuestions = async () => {
     setLoading(true);
     const questions = await onGetAllFilterQuestions(id);
     if (questions) {
-      setQuestions(questions.questions);
+      setIsQuestions(questions.questions);
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    onGetFilterQuestions();
+    onGetQuestions();
   }, []);
 
   return {
+    loading,
+    onAddFilterQuestions,
     register,
     errors,
-    onAddFilterQuestions,
     isQuestions,
-    loading,
   };
+};
+
+export const useProducts = (domainId: string) => {
+  const { toast } = useToast();
+  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    register,
+    reset,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<AddProductProps>({
+    resolver: zodResolver(AddProductSchema),
+  });
+
+  const onCreateNewProduct = handleSubmit(async (values) => {
+    try {
+      setLoading(true);
+      const uploaded = await upload.uploadFile(values.image[0]);
+      const product = await onCreateNewDomainProduct(
+        domainId,
+        values.name,
+        uploaded.uuid,
+        values.price,
+      );
+      if (product) {
+        reset();
+        toast({
+          title: 'Success',
+          description: product.message,
+        });
+        setLoading(false);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  return { onCreateNewProduct, register, errors, loading };
 };
