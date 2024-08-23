@@ -180,31 +180,31 @@ export const useChatBot = () => {
   };
 };
 
-// export const useRealTime = (
-//   chatRoomId: string,
-//   setChats: React.Dispatch<
-//     React.SetStateAction<
-//       {
-//         role: 'user' | 'assistant';
-//         content: string;
-//         link?: string | undefined;
-//       }[]
-//     >
-//   >,
-// ) => {
-//   useEffect(() => {
-//     pusherClient.subscribe(chatRoom);
-//     pusherClient.bind('realtime-mode', (data: any) => {
-//       setChats((prev: any) => [
-//         ...prev,
-//         {
-//           role: data.chat.role,
-//           content: data.chat.content,
-//         },
-//       ]);
-//     });
-//     return () => {
-//       pusherClient.unsubscribe('realtime-mode');
-//     };
-//   }, []);
-// };
+export const useRealTime = (
+  chatRoomId: string,
+  setChats: React.Dispatch<
+    React.SetStateAction<
+      {
+        role: 'user' | 'assistant';
+        content: string;
+        link?: string | undefined;
+      }[]
+    >
+  >,
+) => {
+  useEffect(() => {
+    pusherClient.subscribe(chatRoom);
+    pusherClient.bind('realtime-mode', (data: any) => {
+      setChats((prev: any) => [
+        ...prev,
+        {
+          role: data.chat.role,
+          content: data.chat.content,
+        },
+      ]);
+    });
+    return () => {
+      pusherClient.unsubscribe('realtime-mode');
+    };
+  }, []);
+};

@@ -1,15 +1,15 @@
 'use client';
+import { useChatWindow } from '@/hooks/conversation/use-conversation';
 import React from 'react';
 import { Loader } from '../loader';
 import Bubble from '../chatbot/bubble';
-import { useChatWindow } from '@/hooks/conversation/use-conversation';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { PaperclipIcon } from 'lucide-react';
 
 type Props = {};
 
-const Messanger = (props: Props) => {
+const Messenger = (props: Props) => {
   const {
     messageWindowRef,
     chats,
@@ -23,8 +23,8 @@ const Messanger = (props: Props) => {
       <div className="flex-1 h-0 w-full flex flex-col">
         <Loader loading={loading}>
           <div
-            className="w-full flex-1 h-0 flex flex-col gap-3 pl-5 py-5 chat-window overflow-y-auto"
             ref={messageWindowRef}
+            className="w-full flex-1 h-0 flex flex-col gap-3 pl-5 py-5 chat-window overflow-y-auto"
           >
             {chats.length ? (
               chats.map((chat) => (
@@ -38,7 +38,7 @@ const Messanger = (props: Props) => {
                 />
               ))
             ) : (
-              <div>No chats selected</div>
+              <div>No Chat Selected</div>
             )}
           </div>
         </Loader>
@@ -50,19 +50,19 @@ const Messanger = (props: Props) => {
         <div className="flex justify-between">
           <Input
             {...register('content')}
-            placeholder="Type a message..."
+            placeholder="Type your message..."
             className="focus-visible:ring-0 flex-1 p-0 focus-visible:ring-offset-0 bg-muted rounded-none outline-none border-none"
           />
-          <Button type="submit" className="mt-3 px-7">
+          <Button type="submit" className="mt-3 px-7" disabled={!chatRoom}>
             Send
           </Button>
         </div>
         <span>
-          <PaperclipIcon width={18} className="text-muted-foreground" />
+          <PaperclipIcon className="text-muted-foreground" />
         </span>
       </form>
     </div>
   );
 };
 
-export default Messanger;
+export default Messenger;

@@ -4,20 +4,20 @@ import { UseFormRegister } from 'react-hook-form';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import RealTimeMode from './real-time';
 import Image from 'next/image';
-import TabsMenu from '../tabs/index';
 import { BOT_TABS_MENU } from '@/constants/menu';
 import ChatIcon from '@/icons/chat-icon';
 import { TabsContent } from '../ui/tabs';
 import { Separator } from '../ui/separator';
 import Bubble from './bubble';
+import { Responding } from './responding';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Paperclip, Send } from 'lucide-react';
 import { Label } from '../ui/label';
 import { CardDescription, CardTitle } from '../ui/card';
 import UploadButton from '../upload-button';
-import { Responding } from './responding';
 import Accordion from '../accordion';
+import TabsMenu from '../tabs';
 
 type Props = {
   errors: any;
@@ -80,9 +80,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="flex items-start flex-col">
-              <h3 className="text-lg font-bold leading-none">
-                Sales Rep - Ematpro
-              </h3>
+              <h3 className="text-lg font-bold leading-none">Sales</h3>
               <p className="text-sm">{domainName.split('.com')[0]}</p>
               {realtimeMode?.mode && (
                 <RealTimeMode
@@ -169,7 +167,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
           </TabsContent>
         </TabsMenu>
         <div className="flex justify-center ">
-          <p className="text-gray-400 text-xs">Powered By ematpro.dev</p>
+          <p className="text-gray-400 text-xs">Powered By ematpro</p>
         </div>
       </div>
     );

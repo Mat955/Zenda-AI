@@ -1,5 +1,5 @@
-import { cn, extractUUIDFromString, getMonthName } from '@/lib/utils';
 import React from 'react';
+import { cn, extractUUIDFromString, getMonthName } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { User } from 'lucide-react';
 import Image from 'next/image';
@@ -11,23 +11,24 @@ type Props = {
     content: string;
     link?: string;
   };
-  createdAt: Date;
+  createdAt?: Date;
 };
 
 const Bubble = ({ message, createdAt }: Props) => {
-  const date = new Date();
+  let d = new Date();
   const image = extractUUIDFromString(message.content);
+  console.log(message.link);
 
   return (
     <div
       className={cn(
         'flex gap-2 items-end',
-        message.role === 'assistant'
+        message.role == 'assistant'
           ? 'self-start'
           : 'self-end flex-row-reverse',
       )}
     >
-      {message.role === 'assistant' ? (
+      {message.role == 'assistant' ? (
         <Avatar className="w-5 h-5">
           <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
           <AvatarFallback>CN</AvatarFallback>
@@ -42,13 +43,13 @@ const Bubble = ({ message, createdAt }: Props) => {
       <div
         className={cn(
           'flex flex-col gap-3 min-w-[200px] max-w-[300px] p-4 rounded-t-md',
-          message.role === 'assistant'
+          message.role == 'assistant'
             ? 'bg-muted rounded-r-md'
             : 'bg-grandis rounded-l-md',
         )}
       >
         {createdAt ? (
-          <div className="flex gap-2 text-sm text-gray-600">
+          <div className="flex gap-2 text-xs text-gray-600">
             <p>
               {createdAt.getDate()} {getMonthName(createdAt.getMonth())}
             </p>
@@ -58,9 +59,9 @@ const Bubble = ({ message, createdAt }: Props) => {
             </p>
           </div>
         ) : (
-          <p className="text-sm">
-            {`${date.getHours()}:${date.getMinutes()} ${
-              date.getHours() > 12 ? 'PM' : 'AM'
+          <p className="text-xs">
+            {`${d.getHours()}:${d.getMinutes()} ${
+              d.getHours() > 12 ? 'pm' : 'am'
             }`}
           </p>
         )}

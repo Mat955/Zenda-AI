@@ -5,7 +5,9 @@ import { loadStripe } from '@stripe/stripe-js';
 import { useStripeCustomer } from '@/hooks/billing/use-billing';
 import { Loader } from '@/components/loader';
 import { Card } from '@/components/ui/card';
+import { Elements } from '@stripe/react-stripe-js';
 import Image from 'next/image';
+import { CustomerPaymentForm } from './payment-form';
 
 type Props = {
   onBack(): void;
@@ -62,6 +64,16 @@ const PaymentCheckout = ({
                   </div>
                 </Card>
               ))}
+          </div>
+          <div className="col-span-1 pl-5">
+            {stripeSecret && StripePromise && (
+              <Elements
+                stripe={StripePromise}
+                options={{ clientSecret: stripeSecret }}
+              >
+                <CustomerPaymentForm onNext={onNext} />
+              </Elements>
+            )}
           </div>
         </div>
       </div>

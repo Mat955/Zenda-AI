@@ -19,8 +19,8 @@ const ChatCard = ({
   title,
   description,
   createdAt,
-  id,
   onChat,
+  id,
   seen,
 }: Props) => {
   const { messageSentAt, urgent } = useChatTime(createdAt, id);

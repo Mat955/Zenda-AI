@@ -18,10 +18,10 @@ const CustomerPaymentPage = async ({ params }: Props) => {
 
   return (
     <PortalForm
-      bookings={bookings}
       email={questions.email!}
       domainid={params.domainid}
       products={products?.products}
+      amount={products?.amount}
       stripeId={products?.stripeId!}
       customerId={params.customerid}
       questions={questions.questions}
@@ -30,4 +30,4 @@ const CustomerPaymentPage = async ({ params }: Props) => {
   );
 };
 
-export default CustomerSignUpForm;
+export default CustomerPaymentPage;
