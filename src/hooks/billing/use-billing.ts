@@ -6,6 +6,7 @@ import {
   useElements,
   useStripe as useStripeHook,
 } from '@stripe/react-stripe-js';
+import { useRouter } from 'next/navigation';
 
 export const useStripe = () => {
   const [onStripeAccountPending, setOnStripeAccountPending] =
@@ -104,4 +105,36 @@ export const useCompleteCustomerPayment = (onNext: () => void) => {
   };
 
   return { processing, onMakePayment };
+};
+
+export const useSubscriptionPlan = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [payment, setPayment] = useState<boolean>(false);
+
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const onUpdateTpFreeTier = async () => {
+    try {
+      setLoading(true);
+      const freePlan = await onUpdateSubscriptionPlan('STANDARD');
+
+      if (freePlan) {
+        setLoading(false);
+        toast({
+          title: 'Subscription Plan Updated',
+          description: freePlan.message,
+        });
+        router.refresh();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const onSetPayment = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
+    setPayment(payment);
+  };
+
+  return { loading, onSetPayment, payment, onUpdateTpFreeTier };
 };
