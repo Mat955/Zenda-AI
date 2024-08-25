@@ -1,0 +1,100 @@
+hr {
+	border-color: #ffe93b !important;
+}
+
+body {
+	font-family: 'Montserrat', sans-serif;
+	background: url('https://i.imgur.com/M4LFINA.jpg') center/cover repeat fixed;
+	background-position: center !important;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Montserrat', sans-serif;
+}
+
+.header img {
+	margin: 0 !important;
+	height: auto !important;
+	width: 80% !important;
+}
+
+h3,
+h2,
+.app .text-content .title {
+	font-weight: 500 !important;
+}
+
+section.sub-header {
+	font-family: 'Montserrat' !important;
+	padding: 25px;
+	background: none;
+	color: white;
+	padding-bottom: 5px;
+	padding-top: 10px;
+}
+
+.sub-footer p {
+	padding: 10px !important;
+	font-weight: 400 !important;
+}
+
+.app .text-content .desc {
+	font-weight: 300 !important;
+	color: #eee !important;
+}
+
+.sub-footer {
+	background-color: rgba(0, 0, 0, 0.6) !important;
+	filter: none !important;
+}
+
+.apps {
+	background-color: rgba(0, 0, 0, 0.6) !important;
+}
+.app .text-content .title {
+	color: #fff !important;
+}
+
+.app .app-btn {
+	font-weight: 700 !important;
+	font-size: 14.5px !important;
+	background-color: #ffe93b !important;
+	margin: 0 !important;
+	color: black !important;
+}
+
+.app .img-content .star {
+	background-color: white !important;
+}
+
+.app {
+	margin: 0 !important;
+	padding: 10px 20px !important;
+	display: flex !important;
+	align-items: center !important;
+	justify-content: center !important;
+}
+
+.header h3 {
+	display: none !important;
+}
+
+.header,
+.footer {
+	padding: 20px !important;
+	background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+.header {
+	padding: 10px 0 0 0 !important;
+}
+
+.footer {
+	background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+footer {
+	margin-top: -15px !important;
+}
