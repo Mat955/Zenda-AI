@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 import {
 	onCreateCustomerPaymentIntentSecret,
 	onGetStripeClientSecret,
-	onUpdateSubscriptionPlan,
+	onUpdateSubscription,
 } from '@/actions/stripe';
 import { useToast } from '@/components/ui/use-toast';
+import axios from 'axios';
 import {
 	useElements,
 	useStripe as useStripeHook,
@@ -36,6 +36,7 @@ export const useStripe = () => {
 export const useStripeCustomer = (amount: number, stripeId: string) => {
 	const [stripeSecret, setStripeSecret] = useState<string>('');
 	const [loadForm, setLoadForm] = useState<boolean>(false);
+
 	const onGetCustomerIntent = async (amount: number) => {
 		try {
 			setLoadForm(true);
@@ -43,7 +44,6 @@ export const useStripeCustomer = (amount: number, stripeId: string) => {
 				amount,
 				stripeId,
 			);
-
 			if (intent) {
 				setLoadForm(false);
 				setStripeSecret(intent.secret!);
@@ -68,7 +68,6 @@ export const useCompleteCustomerPayment = (onNext: () => void) => {
 
 	const onMakePayment = async (e: React.MouseEvent) => {
 		e.preventDefault();
-
 		if (!stripe || !elements) {
 			return null;
 		}
@@ -87,17 +86,13 @@ export const useCompleteCustomerPayment = (onNext: () => void) => {
 			});
 
 			if (error) {
-				toast({
-					title: error.message,
-					description: 'error',
-				});
-				setProcessing(false);
+				console.log(error);
 			}
 
 			if (paymentIntent?.status === 'succeeded') {
 				toast({
-					title: 'Payment Successful',
-					description: 'success',
+					title: 'Success',
+					description: 'Payment complete',
 				});
 				onNext();
 			}
@@ -113,21 +108,18 @@ export const useCompleteCustomerPayment = (onNext: () => void) => {
 
 export const useSubscriptionPlan = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
 	const [loading, setLoading] = useState<boolean>(false);
-	const [payment, setPayment] = useState<boolean>(false);
-
+	const [payment, setPayment] = useState<'STANDARD' | 'PRO' | 'ULTIMATE'>(plan);
 	const { toast } = useToast();
 	const router = useRouter();
-
-	const onUpdateTpFreeTier = async () => {
+	const onUpdatetToFreTier = async () => {
 		try {
 			setLoading(true);
-			const freePlan = await onUpdateSubscriptionPlan('STANDARD');
-
-			if (freePlan) {
+			const free = await onUpdateSubscription('STANDARD');
+			if (free) {
 				setLoading(false);
 				toast({
-					title: 'Subscription Plan Updated',
-					description: freePlan.message,
+					title: 'Success',
+					description: free.message,
 				});
 				router.refresh();
 			}
@@ -136,11 +128,15 @@ export const useSubscriptionPlan = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
 		}
 	};
 
-	const onSetPayment = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
+	const onSetPayment = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') =>
 		setPayment(payment);
-	};
 
-	return { loading, onSetPayment, payment, onUpdateTpFreeTier };
+	return {
+		loading,
+		onSetPayment,
+		payment,
+		onUpdatetToFreTier,
+	};
 };
 
 export const useStripeElements = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
@@ -151,7 +147,6 @@ export const useStripeElements = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
 		try {
 			setLoadForm(true);
 			const intent = await onGetStripeClientSecret(plans);
-
 			if (intent) {
 				setLoadForm(false);
 				setStripeSecret(intent.secret!);
@@ -163,7 +158,57 @@ export const useStripeElements = (payment: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
 
 	useEffect(() => {
 		onGetBillingIntent(payment);
-	}, []);
+	}, [payment]);
 
 	return { stripeSecret, loadForm };
+};
+
+export const useCompletePayment = (
+	payment: 'STANDARD' | 'PRO' | 'ULTIMATE',
+) => {
+	const [processing, setProcessing] = useState<boolean>(false);
+	const router = useRouter();
+	const { toast } = useToast();
+	const stripe = useStripeHook();
+	const elements = useElements();
+
+	const onMakePayment = async (e: React.FormEvent) => {
+		e.preventDefault();
+		if (!stripe || !elements) {
+			return null;
+		}
+
+		try {
+			setProcessing(true);
+
+			const { error, paymentIntent } = await stripe.confirmPayment({
+				elements,
+				confirmParams: {
+					return_url: 'http://localhost:3000/settings',
+				},
+				redirect: 'if_required',
+			});
+
+			if (error) {
+				console.log(error);
+			}
+
+			if (paymentIntent?.status === 'succeeded') {
+				const plan = await onUpdateSubscription(payment);
+				if (plan) {
+					toast({
+						title: 'Success',
+						description: plan.message,
+					});
+				}
+			}
+
+			setProcessing(false);
+			router.refresh();
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	return { processing, onMakePayment };
 };

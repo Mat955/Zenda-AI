@@ -29,7 +29,7 @@ export const onCreateCustomerPaymentIntentSecret = async (
 			return { secret: paymentIntent.client_secret };
 		}
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 	}
 };
 
@@ -39,7 +39,6 @@ export const onUpdateSubscriptionPlan = async (
 	try {
 		const user = await currentUser();
 		if (!user) return;
-
 		const update = await client.user.update({
 			where: {
 				clerkId: user.id,
@@ -49,7 +48,7 @@ export const onUpdateSubscriptionPlan = async (
 					update: {
 						data: {
 							plan,
-							credits: plan === 'PRO' ? 50 : plan === 'ULTIMATE' ? 500 : 10,
+							credits: plan == 'PRO' ? 50 : plan == 'ULTIMATE' ? 500 : 10,
 						},
 					},
 				},
@@ -62,7 +61,6 @@ export const onUpdateSubscriptionPlan = async (
 				},
 			},
 		});
-
 		if (update) {
 			return {
 				status: 200,
@@ -71,19 +69,18 @@ export const onUpdateSubscriptionPlan = async (
 			};
 		}
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 	}
 };
 
 const setPlanAmount = (item: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
-	switch (item) {
-		case 'PRO':
-			return 1500;
-		case 'ULTIMATE':
-			return 3500;
-		default:
-			return 0;
+	if (item == 'PRO') {
+		return 1500;
 	}
+	if (item == 'ULTIMATE') {
+		return 3500;
+	}
+	return 0;
 };
 
 export const onGetStripeClientSecret = async (
@@ -103,6 +100,6 @@ export const onGetStripeClientSecret = async (
 			return { secret: paymentIntent.client_secret };
 		}
 	} catch (error) {
-		console.error(error);
+		console.log(error);
 	}
 };
