@@ -16,8 +16,6 @@ export const StripeELements = ({ payment }: StripeELementsProps) => {
 
   const { stripeSecret, loadForm } = useStripeElements(payment);
 
-  console.log(payment);
-
   return (
     stripeSecret &&
     StripePromise &&
