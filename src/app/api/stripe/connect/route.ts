@@ -125,8 +125,9 @@ export async function GET() {
                   const accountLink = await stripe.accountLinks.create({
                     account: account.id,
                     refresh_url:
-                      'http://localhost:3000/callback/stripe/refresh',
-                    return_url: 'http://localhost:3000/callback/stripe/success',
+                      'http://zenda-ai.vercel.app/callback/stripe/refresh',
+                    return_url:
+                      'http://zenda-ai.vercel.app/callback/stripe/success',
                     type: 'account_onboarding',
                     collection_options: {
                       fields: 'currently_due',
