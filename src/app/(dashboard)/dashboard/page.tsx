@@ -9,10 +9,12 @@ import {
 import DashboardCard from '@/components/dashboard/cards';
 import PlanUsage from '@/components/dashboard/plan-usage';
 import InfoBar from '@/components/infobar';
+import { Separator } from '@/components/ui/separator';
 import CalIcon from '@/icons/cal-icon';
 import EmailIcon from '@/icons/email-icon';
 import MoneyIcon from '@/icons/money-icon';
 import PersonIcon from '@/icons/person-icon';
+import { TransactionsIcon } from '@/icons/transactions-icon';
 import { CalendarIcon, DollarSignIcon } from 'lucide-react';
 import React from 'react';
 
@@ -69,7 +71,30 @@ const Dashboard = async (props: Props) => {
               clients={clients || 0}
             />
           </div>
-          <div className="flex flex-col"></div>
+          <div className="flex flex-col">
+            <div className="w-full flex justify-between items-start mb-5">
+              <div className="flex gap-3 items-center">
+                <TransactionsIcon />
+                <p className="font-bold">Recent Transactions</p>
+              </div>
+              <p className="font-bold">See more</p>
+            </div>
+            <Separator orientation="horizontal" />
+            {transactions &&
+              transactions.data.map((transaction) => (
+                <div
+                  className="flex gap-3 w-full justify-between items-center border-b-2 py-5"
+                  key={transaction.id}
+                >
+                  <p className="font-bold">
+                    {transaction.calculated_statement_descriptor}
+                  </p>
+                  <p className="font-bold text-xl">
+                    ${transaction.amount / 100}
+                  </p>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
     </>
