@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '../ui/card';
-import { useRealTime } from '@/hooks/chatbot/use-chatbot';
+// import { useRealTime } from '@/hooks/chatbot/use-chatbot';
 
 type Props = {
   chatRoomId: string;
