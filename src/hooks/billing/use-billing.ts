@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import {
   onCreateCustomerPaymentIntentSecret,
   onGetStripeClientSecret,
-  onUpdateSubscription,
+  onUpdateSubscriptionPlan,
 } from '@/actions/stripe';
 import { useToast } from '@/components/ui/use-toast';
 import axios from 'axios';
@@ -111,7 +111,7 @@ export const useSubscriptionPlan = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
   const [payment, setPayment] = useState<'STANDARD' | 'PRO' | 'ULTIMATE'>(plan);
   const { toast } = useToast();
   const router = useRouter();
-  const onUpdatetToFreTier = async () => {
+  const onUpdateToFreeTier = async () => {
     try {
       setLoading(true);
       const free = await onUpdateSubscriptionPlan('STANDARD');
@@ -135,7 +135,7 @@ export const useSubscriptionPlan = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
     loading,
     onSetPayment,
     payment,
-    onUpdatetToFreTier,
+    onUpdateToFreeTier,
   };
 };
 

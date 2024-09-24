@@ -6,7 +6,7 @@ import {
   onViewUnReadMessages,
 } from '@/actions/conversation';
 import { useChatContext } from '@/context/user-chat-context';
-import { getMonthName, pusherClient } from '@/lib/utils';
+import { getMonthName } from '@/lib/utils';
 import {
   ChatBotMessageSchema,
   ConversationSearchSchema,
@@ -159,28 +159,31 @@ export const useChatWindow = () => {
   //   }
   // }, [chatRoom]);
 
-  const onHandleSentMessage = async (values) => {
+  const onHandleSentMessage = handleSubmit(async (values) => {
     try {
+      reset();
       const message = await onOwnerSendMessage(
         chatRoom!,
         values.content,
         'assistant',
       );
+      //WIP: Remove this line
+      // if (message) {
+      //   //remove this
+      //   // setChats((prev) => [...prev, message.message[0]])
 
-      if (message) {
-        setChats((prev) => [...prev, message.message[0]]);
-        // WIP: Uncomment this when pusher is setup
-        // await onRealTimeChat(
-        //   chatRoom!,
-        //   message.message[0].message,
-        //   message.message[0].id,
-        //   'assistant',
-        // );
-      }
+      //   await onRealTimeChat(
+      //     chatRoom!,
+      //     message.message[0].message,
+      //     message.message[0].id,
+      //     'assistant',
+      //   );
+      // }
     } catch (error) {
       console.log(error);
     }
-  };
+  });
+
   return {
     messageWindowRef,
     chats,

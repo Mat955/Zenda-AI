@@ -1,14 +1,14 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-import PusherServer from 'pusher';
-import PusherClient from 'pusher-js';
+// import PusherServer from 'pusher';
+// import PusherClient from 'pusher-js';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 //WIP: TO DO
-export const pusherServer = {};
+// export const pusherServer = {};
 // new pusherServer({
 //   appId: process.env.PUSHER_APP_ID as string,
 //   key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
@@ -18,7 +18,7 @@ export const pusherServer = {};
 // });
 
 //WIP: TO DO
-export const pusherClient = {};
+// export const pusherClient = {};
 // new pusherClient(
 //   process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
 //   {

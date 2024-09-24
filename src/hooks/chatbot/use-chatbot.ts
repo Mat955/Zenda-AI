@@ -1,21 +1,26 @@
 import { onAiChatBotAssistant, onGetCurrentChatBot } from '@/actions/bot';
-import { postToParent, pusherClient } from '@/lib/utils';
+import { postToParent } from '@/lib/utils';
 import {
   ChatBotMessageProps,
   ChatBotMessageSchema,
 } from '@/schemas/conversation.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { UploadClient } from '@uploadcare/upload-client';
+
+import { useForm } from 'react-hook-form';
 
 const upload = new UploadClient({
   publicKey: process.env.NEXT_PUBLIC_UPLOAD_CARE_PUBLIC_KEY as string,
 });
 
 export const useChatBot = () => {
-  //WIP: Setup the chatbot hooks
-  const { register, handleSubmit, reset } = useForm<ChatBotMessageProps>({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ChatBotMessageProps>({
     resolver: zodResolver(ChatBotMessageSchema),
   });
   const [currentBot, setCurrentBot] = useState<
@@ -41,19 +46,18 @@ export const useChatBot = () => {
   const messageWindowRef = useRef<HTMLDivElement | null>(null);
   const [botOpened, setBotOpened] = useState<boolean>(false);
   const onOpenChatBot = () => setBotOpened((prev) => !prev);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [onChats, setOnChats] = useState<
     { role: 'assistant' | 'user'; content: string; link?: string }[]
   >([]);
-
   const [onAiTyping, setOnAiTyping] = useState<boolean>(false);
-  const [currentBotId, setCurrentBotId] = useState<string | null>();
-  const [onRealTime, setOnRealTime] = useState<
-    { chatroom: string; mode: boolean } | undefined
-  >(undefined);
+  const [currentBotId, setCurrentBotId] = useState<string>();
+  // const [onRealTime, setOnRealTime] = useState<
+  //   { chatroom: string; mode: boolean } | undefined
+  // >(undefined);
 
   const onScrollToBottom = () => {
-    messageWindowRef.current?.scrollTo({
+    messageWindowRef.current?.scroll({
       top: messageWindowRef.current.scrollHeight,
       left: 0,
       behavior: 'smooth',
@@ -75,16 +79,6 @@ export const useChatBot = () => {
 
   let limitRequest = 0;
 
-  useEffect(() => {
-    window.addEventListener('message', (event) => {
-      const botid = event.data;
-      if (limitRequest < 1 && typeof botid === 'string') {
-        onGetDomainChatBot(botid);
-        limitRequest++;
-      }
-    });
-  }, []);
-
   const onGetDomainChatBot = async (id: string) => {
     setCurrentBotId(id);
     const chatbot = await onGetCurrentChatBot(id);
@@ -101,17 +95,34 @@ export const useChatBot = () => {
     }
   };
 
+  useEffect(() => {
+    window.addEventListener('message', (e) => {
+      console.log(e.data);
+      const botid = e.data;
+      if (limitRequest < 1 && typeof botid == 'string') {
+        onGetDomainChatBot(botid);
+        limitRequest++;
+      }
+    });
+  }, []);
+
   const onStartChatting = handleSubmit(async (values) => {
-    reset();
+    console.log('ALL VALUES', values);
+
     if (values.image.length) {
+      console.log('IMAGE fROM ', values.image[0]);
       const uploaded = await upload.uploadFile(values.image[0]);
-      setOnChats((prev: any) => [
-        ...prev,
-        {
-          role: 'user',
-          content: uploaded.uuid,
-        },
-      ]);
+      // if (!onRealTime?.mode) {
+      //   setOnChats((prev: any) => [
+      //     ...prev,
+      //     {
+      //       role: 'user',
+      //       content: uploaded.uuid,
+      //     },
+      //   ]);
+      // }
+
+      console.log('🟡 RESPONSE FROM UC', uploaded.uuid);
       setOnAiTyping(true);
       const response = await onAiChatBotAssistant(
         currentBotId!,
@@ -123,24 +134,29 @@ export const useChatBot = () => {
       if (response) {
         setOnAiTyping(false);
         if (response.live) {
-          setOnRealTime((prev) => ({
-            ...prev,
-            chatroom: response.chatRoom,
-            mode: response.live,
-          }));
+          // setOnRealTime((prev) => ({
+          //   ...prev,
+          //   chatroom: response.chatRoom,
+          //   mode: response.live,
+          // }));
         } else {
           setOnChats((prev: any) => [...prev, response.response]);
         }
       }
     }
+    reset();
+
     if (values.content) {
-      setOnChats((prev: any) => [
-        ...prev,
-        {
-          role: 'user',
-          content: values.content,
-        },
-      ]);
+      // if (!onRealTime?.mode) {
+      //   setOnChats((prev: any) => [
+      //     ...prev,
+      //     {
+      //       role: 'user',
+      //       content: values.content,
+      //     },
+      //   ]);
+      // }
+
       setOnAiTyping(true);
 
       const response = await onAiChatBotAssistant(
@@ -153,11 +169,11 @@ export const useChatBot = () => {
       if (response) {
         setOnAiTyping(false);
         if (response.live) {
-          setOnRealTime((prev) => ({
-            ...prev,
-            chatroom: response.chatRoom,
-            mode: response.live,
-          }));
+          // setOnRealTime((prev) => ({
+          //   ...prev,
+          //   chatroom: response.chatRoom,
+          //   mode: response.live,
+          // }));
         } else {
           setOnChats((prev: any) => [...prev, response.response]);
         }
@@ -176,12 +192,13 @@ export const useChatBot = () => {
     currentBot,
     loading,
     setOnChats,
-    onRealTime,
+    // onRealTime,
+    errors,
   };
 };
 
 // export const useRealTime = (
-//   chatRoomId: string,
+//   chatRoom: string,
 //   setChats: React.Dispatch<
 //     React.SetStateAction<
 //       {
@@ -192,19 +209,26 @@ export const useChatBot = () => {
 //     >
 //   >,
 // ) => {
+//   const counterRef = useRef(1);
+
 //   useEffect(() => {
 //     pusherClient.subscribe(chatRoom);
 //     pusherClient.bind('realtime-mode', (data: any) => {
-//       setChats((prev: any) => [
-//         ...prev,
-//         {
-//           role: data.chat.role,
-//           content: data.chat.content,
-//         },
-//       ]);
+//       console.log('✅', data);
+//       if (counterRef.current !== 1) {
+//         setChats((prev: any) => [
+//           ...prev,
+//           {
+//             role: data.chat.role,
+//             content: data.chat.message,
+//           },
+//         ]);
+//       }
+//       counterRef.current += 1;
 //     });
 //     return () => {
-//       pusherClient.unsubscribe('realtime-mode');
+//       pusherClient.unbind('realtime-mode');
+//       pusherClient.unsubscribe(chatRoom);
 //     };
 //   }, []);
 // };

@@ -24,7 +24,7 @@ const LoginForm = (props: Props) => {
           key={field.id}
           {...field}
           register={register}
-          error={errors}
+          errors={errors}
           name={field.name}
         />
       ))}

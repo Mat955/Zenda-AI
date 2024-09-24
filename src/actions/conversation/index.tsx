@@ -1,7 +1,7 @@
 'use server';
 
 import { client } from '@/lib/prisma';
-import { pusherServer } from '@/lib/utils';
+// import { pusherServer } from '@/lib/utils';
 
 export const onToggleRealtime = async (id: string, state: boolean) => {
   try {

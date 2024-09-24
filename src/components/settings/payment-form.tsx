@@ -1,4 +1,5 @@
-import { useCompleteCustomerPayment } from '@/hooks/billing/use-billing';
+'use client';
+import { useCompletePayment } from '@/hooks/billing/use-billing';
 import React from 'react';
 import { CardDescription } from '../ui/card';
 import { PaymentElement } from '@stripe/react-stripe-js';
@@ -10,7 +11,7 @@ type PaymentFormProps = {
 };
 
 const PaymentForm = ({ plan }: PaymentFormProps) => {
-  const { processing, onMakePayment } = useCompleteCustomerPayment(plan);
+  const { processing, onMakePayment } = useCompletePayment(plan);
 
   return (
     <form onSubmit={onMakePayment} className="flex flex-col gap-5">

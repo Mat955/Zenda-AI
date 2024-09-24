@@ -65,7 +65,7 @@ const Dashboard = async (props: Props) => {
               </p>
             </div>
             <PlanUsage
-              plan={plan?.plan}
+              plan={plan?.plan!}
               credits={plan?.credits || 0}
               domains={plan?.domains || 0}
               clients={clients || 0}

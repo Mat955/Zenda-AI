@@ -16,13 +16,13 @@ type Props = {
     | {
         id: string;
         name: string;
-        icon: string;
+        icon: string | null;
       }[]
     | null
     | undefined;
 };
 
-const DomainMenu = ({ min, domains }: Props) => {
+const DomainMenu = ({ domains, min }: Props) => {
   const { register, onAddDomain, loading, errors, isDomain } = useDomain();
 
   return (
@@ -30,10 +30,10 @@ const DomainMenu = ({ min, domains }: Props) => {
       <div className="flex justify-between w-full items-center">
         {!min && <p className="text-xs text-gray-500">DOMAINS</p>}
         <AppDrawer
-          description="Add in your domain to integrate your chatbot"
+          description="add in your domain address to integrate your chatbot"
           title="Add your business domain"
           onOpen={
-            <div className="cursor-poiner text-gray-500 rounded-full border-2">
+            <div className="cursor-pointer text-gray-500 rounded-full border-2">
               <Plus />
             </div>
           }
@@ -49,7 +49,7 @@ const DomainMenu = ({ min, domains }: Props) => {
                 label="Domain"
                 name="domain"
                 errors={errors}
-                placeholder="yourdomain.com"
+                placeholder="mydomain.com"
                 type="text"
               />
               <UploadButton

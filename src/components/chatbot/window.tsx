@@ -2,7 +2,7 @@ import { ChatBotMessageProps } from '@/schemas/conversation.schema';
 import React, { forwardRef } from 'react';
 import { UseFormRegister } from 'react-hook-form';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import RealTimeMode from './real-time';
+// import RealTimeMode from './real-time';
 import Image from 'next/image';
 import { BOT_TABS_MENU } from '@/constants/menu';
 import ChatIcon from '@/icons/chat-icon';
@@ -29,12 +29,12 @@ type Props = {
   theme?: string | null;
   textColor?: string | null;
   help?: boolean;
-  realtimeMode:
-    | {
-        chatroom: string;
-        mode: boolean;
-      }
-    | undefined;
+  // realtimeMode:
+  //   | {
+  //       chatroom: string;
+  //       mode: boolean;
+  //     }
+  //   | undefined;
   helpdesk: {
     id: string;
     question: string;
@@ -62,7 +62,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
       onResponding,
       domainName,
       helpdesk,
-      realtimeMode,
+      // realtimeMode,
       setChat,
       textColor,
       theme,
@@ -80,14 +80,16 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="flex items-start flex-col">
-              <h3 className="text-lg font-bold leading-none">Sales</h3>
+              <h3 className="text-lg font-bold leading-none">
+                Sales Rep - eMATPRO.dev
+              </h3>
               <p className="text-sm">{domainName.split('.com')[0]}</p>
-              {realtimeMode?.mode && (
+              {/* {realtimeMode?.mode && (
                 <RealTimeMode
                   setChats={setChat}
                   chatRoomId={realtimeMode.chatroom}
                 />
-              )}
+              )} */}
             </div>
           </div>
           <div className="relative w-16 h-16">
@@ -167,7 +169,7 @@ export const BotWindow = forwardRef<HTMLDivElement, Props>(
           </TabsContent>
         </TabsMenu>
         <div className="flex justify-center ">
-          <p className="text-gray-400 text-xs">Powered By ematpro</p>
+          <p className="text-gray-400 text-xs">Powered By ZendaAI</p>
         </div>
       </div>
     );

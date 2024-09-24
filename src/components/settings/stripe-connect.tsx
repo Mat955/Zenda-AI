@@ -1,8 +1,8 @@
 'use client';
-
-import { useStripe } from '@/hooks/billing/use-billing';
-import { Loader } from '../loader';
+import React from 'react';
 import { Button } from '../ui/button';
+import { Loader } from '../loader';
+import { useStripe } from '@/hooks/billing/use-billing';
 
 type StripeConnectProps = {
   connected: boolean;
@@ -10,16 +10,11 @@ type StripeConnectProps = {
 
 export const StripeConnect = ({ connected }: StripeConnectProps) => {
   const { onStripeConnect, onStripeAccountPending } = useStripe();
-
   return (
     <Button disabled={connected} onClick={onStripeConnect}>
-      {onStripeAccountPending ? (
-        <Loader />
-      ) : connected ? (
-        'Connected'
-      ) : (
-        'Connect to Stripe'
-      )}
+      <Loader loading={onStripeAccountPending}>
+        {connected ? 'Connected' : 'Connect to stripe'}
+      </Loader>
     </Button>
   );
 };
