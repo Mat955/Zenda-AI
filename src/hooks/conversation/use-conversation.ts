@@ -2,7 +2,7 @@ import {
   onGetChatMessages,
   onGetDomainChatRooms,
   onOwnerSendMessage,
-  onRealTimeChat,
+  // onRealTimeChat,
   onViewUnReadMessages,
 } from '@/actions/conversation';
 import { useChatContext } from '@/context/user-chat-context';
