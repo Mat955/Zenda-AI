@@ -17,6 +17,8 @@ import PersonIcon from '@/icons/person-icon';
 import { TransactionsIcon } from '@/icons/transactions-icon';
 import { CalendarIcon, DollarSignIcon } from 'lucide-react';
 import React from 'react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 type Props = {};
 

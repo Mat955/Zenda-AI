@@ -125,12 +125,20 @@ export async function GET() {
                 });
 
                 if (saveAccountId) {
+                  const refreshUrl =
+                    process.env.NODE_ENV === 'production'
+                      ? 'https://zenda-ai.vercel.app/callback/stripe/refresh'
+                      : 'http://localhost:3000/callback/stripe/refresh';
+
+                  const returnUrl =
+                    process.env.NODE_ENV === 'production'
+                      ? 'https://zenda-ai.vercel.app/callback/stripe/success'
+                      : 'http://localhost:3000/callback/stripe/success';
+
                   const accountLink = await stripe.accountLinks.create({
                     account: account.id,
-                    refresh_url:
-                      'https://zenda-ai.vercel.app/callback/stripe/refresh',
-                    return_url:
-                      'https://zenda-ai.vercel.app/callback/stripe/success',
+                    refresh_url: refreshUrl,
+                    return_url: returnUrl,
                     type: 'account_onboarding',
                     collection_options: {
                       fields: 'currently_due',
