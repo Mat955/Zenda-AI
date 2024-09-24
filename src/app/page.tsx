@@ -45,7 +45,7 @@ const Home = (props: Props) => {
             src="/images/iphonecorinna.png"
             width={400}
             height={100}
-            alt="iphonecorinna logo"
+            alt="iphone zenda logo"
             className="max-w-lg object-contain"
           />
         </div>
