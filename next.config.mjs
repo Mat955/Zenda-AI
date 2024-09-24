@@ -9,19 +9,9 @@ const nextConfig = {
       },
     ],
   },
-  async headers() {
-    return [
-      {
-        source: '/dashboard',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-store',
-          },
-        ],
-      },
-    ];
-  },
+
+  reactStrictMode: true,
+  swcMinify: true,
 };
 
 export default nextConfig;
