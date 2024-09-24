@@ -20,7 +20,7 @@ type Props = {};
 
 const Home = (props: Props) => {
   return (
-    <main className="bg-white">
+    <main className="bg-white dark:bg-muted">
       <NavBar />
       <section>
         <div className="flex items-center justify-center flex-col mt-[80px] gap-4">

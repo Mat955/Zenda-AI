@@ -47,7 +47,7 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
       <div className="flex flex-col gap-3 mt-5">
         <div className="flex gap-4 items-center">
           <h2 className="font-bold text-2xl">Chatbot Setting</h2>
-          <div className="flex gap-1 bg-cream rounded-full px-3 py-1 text-xs items-center font-bold">
+          <div className="flex gap-1 bg-cream rounded-full px-3 py-1 text-xs items-center font-bold dark:bg-muted">
             <PremiumBadge />
             Premium
           </div>
@@ -86,7 +86,10 @@ const SettingsForm = ({ id, name, plan, chatBot }: Props) => {
         >
           <Loader loading={deleting}>Delete Domain</Loader>
         </Button>
-        <Button type="submit" className="w-[100px] h-[50px]">
+        <Button
+          type="submit"
+          className="w-[100px] h-[50px] dark:bg-muted dark:text-white"
+        >
           <Loader loading={loading}>Save</Loader>
         </Button>
       </div>

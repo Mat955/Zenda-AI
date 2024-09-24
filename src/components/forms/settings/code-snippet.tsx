@@ -47,7 +47,7 @@ const CodeSnippet = ({ id }: Props) => {
         label="Code snippet"
         message="Copy and paste this code snippet into your header tag of your website to integrate your chatbot"
       />
-      <div className="bg-cream px-10 rounded-lg inline-block relative">
+      <div className="bg-cream px-10 rounded-lg inline-block relative dark:bg-muted">
         <Copy
           className="absolute top-5 right-5 text-gray-400 cursor-pointer"
           onClick={() => {
@@ -58,7 +58,7 @@ const CodeSnippet = ({ id }: Props) => {
             });
           }}
         />
-        <pre className="text-sm font-mono">{snippet}</pre>
+        <pre className="text-sm font-mono dark:font-normal">{snippet}</pre>
       </div>
     </div>
   );
