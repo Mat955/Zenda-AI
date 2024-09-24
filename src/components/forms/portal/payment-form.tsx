@@ -11,7 +11,6 @@ type CustomerPaymentFormProps = {
 
 export const CustomerPaymentForm = ({ onNext }: CustomerPaymentFormProps) => {
   const { processing, onMakePayment } = useCompleteCustomerPayment(onNext);
-
   return (
     <div className="flex flex-col">
       <PaymentElement />

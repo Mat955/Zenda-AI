@@ -114,7 +114,7 @@ export const useSubscriptionPlan = (plan: 'STANDARD' | 'PRO' | 'ULTIMATE') => {
   const onUpdatetToFreTier = async () => {
     try {
       setLoading(true);
-      const free = await onUpdateSubscription('STANDARD');
+      const free = await onUpdateSubscriptionPlan('STANDARD');
       if (free) {
         setLoading(false);
         toast({
@@ -194,7 +194,7 @@ export const useCompletePayment = (
       }
 
       if (paymentIntent?.status === 'succeeded') {
-        const plan = await onUpdateSubscription(payment);
+        const plan = await onUpdateSubscriptionPlan(payment);
         if (plan) {
           toast({
             title: 'Success',
