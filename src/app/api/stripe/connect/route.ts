@@ -8,6 +8,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   apiVersion: '2024-06-20',
 });
 
+// Mark the route as dynamic
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   try {
     const user = await currentUser();
@@ -149,5 +152,9 @@ export async function GET() {
       'An error occurred when calling the Stripe API to create an account:',
       error,
     );
+    return new NextResponse('Internal Server Error', { status: 500 });
   }
+
+  // Return a default response if no other response was returned
+  return new NextResponse('Unexpected error occurred', { status: 500 });
 }
