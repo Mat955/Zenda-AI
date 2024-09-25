@@ -5,13 +5,10 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'ucarecdn.com', // hosting image
+        hostname: 'ucarecdn.com',
       },
     ],
   },
-
-  reactStrictMode: true,
-  swcMinify: true,
 };
 
 export default nextConfig;

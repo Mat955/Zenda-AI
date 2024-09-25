@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { PortalBanner } from '@/components/portal/banner';
 import React from 'react';
 

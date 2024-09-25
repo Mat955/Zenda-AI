@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { client } from '@/lib/prisma';
 import { currentUser } from '@clerk/nextjs';
 import { NextResponse } from 'next/server';
@@ -7,9 +8,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET!, {
   typescript: true,
   apiVersion: '2024-06-20',
 });
-
-// Mark the route as dynamic
-export const dynamic = 'force-dynamic';
 
 export async function GET() {
   try {

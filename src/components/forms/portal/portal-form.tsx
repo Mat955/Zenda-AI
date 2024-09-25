@@ -60,7 +60,7 @@ const PortalForm = ({
     if (questions.every((question) => question.answered)) {
       onNext();
     }
-  }, []);
+  }, [questions, onNext]);
 
   return (
     <form

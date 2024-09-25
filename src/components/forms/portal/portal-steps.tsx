@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form';
 import QuestionsForm from './questions';
 import BookAppointmentDate from './booking-date';
@@ -56,6 +56,16 @@ const PortalSteps = ({
   amount,
   stripeId,
 }: Props) => {
+  const checkAndProceed = useCallback(() => {
+    if (questions.every((q) => q.answered !== null)) {
+      onNext();
+    }
+  }, [questions, onNext]);
+
+  useEffect(() => {
+    checkAndProceed();
+  }, [checkAndProceed]);
+
   console.log(step);
   if (step == 1) {
     return (

@@ -1,7 +1,8 @@
-import { currentUser } from "@clerk/nextjs";
-import Image from "next/image";
-import { redirect } from "next/navigation";
-import React from "react";
+export const dynamic = 'force-dynamic';
+import { currentUser } from '@clerk/nextjs';
+import Image from 'next/image';
+import { redirect } from 'next/navigation';
+import React from 'react';
 
 type Props = {
   children: React.ReactNode;
@@ -10,7 +11,7 @@ type Props = {
 const Layout = async ({ children }: Props) => {
   const user = await currentUser();
 
-  if (user) redirect("/");
+  if (user) redirect('/');
 
   return (
     <div className="h-screen flex w-full justify-center">
@@ -20,8 +21,8 @@ const Layout = async ({ children }: Props) => {
           alt="Logo"
           sizes="100vw"
           style={{
-            width: "20%",
-            height: "auto",
+            width: '20%',
+            height: 'auto',
           }}
           width={0}
           height={0}

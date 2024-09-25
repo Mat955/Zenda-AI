@@ -1,8 +1,7 @@
 'use client';
 import { useToast } from '@/components/ui/use-toast';
 import { usePathname, useRouter } from 'next/navigation';
-import React from 'react';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useChatContext } from './user-chat-context';
 import {
   onGetConversationMode,
@@ -38,20 +37,20 @@ const useSideBar = () => {
     }
   };
 
-  const onGetCurrentMode = async () => {
+  const onGetCurrentMode = useCallback(async () => {
     setLoading(true);
     const mode = await onGetConversationMode(chatRoom!);
     if (mode) {
       setRealtime(mode.live);
       setLoading(false);
     }
-  };
+  }, [chatRoom]);
 
   useEffect(() => {
     if (chatRoom) {
       onGetCurrentMode();
     }
-  }, [chatRoom]);
+  }, [chatRoom, onGetCurrentMode]);
 
   const page = pathname ? pathname.split('/').pop() : '';
   const { signOut } = useClerk();

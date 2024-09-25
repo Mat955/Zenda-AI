@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import InfoBar from '@/components/infobar';
 import BillingSetting from '@/components/settings/billing-settings';
 import ChangePassword from '@/components/settings/change-password';

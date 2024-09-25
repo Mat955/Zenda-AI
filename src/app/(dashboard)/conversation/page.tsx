@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic';
+
 import { onGetAllAccountDomains } from '@/actions/settings';
 import ConversationMenu from '@/components/conversation';
 import Messanger from '@/components/conversation/messanger';

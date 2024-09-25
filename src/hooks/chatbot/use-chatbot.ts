@@ -5,7 +5,7 @@ import {
   ChatBotMessageSchema,
 } from '@/schemas/conversation.schema';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import { UploadClient } from '@uploadcare/upload-client';
 
 import { useForm } from 'react-hook-form';
@@ -104,7 +104,7 @@ export const useChatBot = () => {
         limitRequest++;
       }
     });
-  }, []);
+  }, [limitRequest]);
 
   const onStartChatting = handleSubmit(async (values) => {
     console.log('ALL VALUES', values);
