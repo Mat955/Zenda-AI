@@ -29,7 +29,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { UploadClient } from '@uploadcare/upload-client';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 
 const upload = new UploadClient({
@@ -183,18 +183,18 @@ export const useHelpDesk = (id: string) => {
     }
   });
 
-  const onGetQuestions = async () => {
+  const onGetQuestions = useCallback(async () => {
     setLoading(true);
     const questions = await onGetAllHelpDeskQuestions(id);
     if (questions) {
       setIsQuestions(questions.questions);
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     onGetQuestions();
-  }, []);
+  }, [onGetQuestions]);
 
   return {
     register,
@@ -234,18 +234,18 @@ export const useFilterQuestions = (id: string) => {
     }
   });
 
-  const onGetQuestions = async () => {
+  const onGetQuestions = useCallback(async () => {
     setLoading(true);
     const questions = await onGetAllFilterQuestions(id);
     if (questions) {
       setIsQuestions(questions.questions);
       setLoading(false);
     }
-  };
+  }, [id]);
 
   useEffect(() => {
     onGetQuestions();
-  }, []);
+  }, [onGetQuestions]);
 
   return {
     loading,

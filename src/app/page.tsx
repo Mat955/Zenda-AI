@@ -32,9 +32,9 @@ const Home = (props: Props) => {
             width={500}
             height={100}
             alt="logo"
-            className="max-w-lg object-contain"
+            className="max-w-xs object-contain md:max-w-lg"
           />
-          <p className="text-center max-w-[500px] text-gray-700 dark:text-gray-300">
+          <p className="text-center max-w-[90%] sm:max-w-[500px] text-gray-700 dark:text-gray-300">
             Your AI powered sales assistant! Embed Zenda AI into any website
             with just a snippet of code!
           </p>
@@ -57,7 +57,7 @@ const Home = (props: Props) => {
         <h2 className="text-4xl text-center text-gray-800 dark:text-gray-100">
           Choose what fits you right
         </h2>
-        <p className="text-muted-foreground text-center max-w-lg dark:text-gray-400">
+        <p className="text-muted-foreground text-center max-w-[90%] sm:max-w-lg dark:text-gray-400">
           Our straightforward pricing model is tailored to your needs. If
           {"you're"} just starting out, we have a free plan for you.
         </p>
@@ -66,10 +66,13 @@ const Home = (props: Props) => {
         {pricingCards.map((card) => (
           <Card
             key={card.title}
-            className={clsx('w-[300px] flex flex-col justify-between', {
-              'border-2 border-primary': card.title === 'Ultimate',
-              'dark:bg-gray-800 dark:border-gray-700': true,
-            })}
+            className={clsx(
+              'w-[90%] sm:w-[300px] flex flex-col justify-between',
+              {
+                'border-2 border-primary': card.title === 'Ultimate',
+                'dark:bg-gray-800 dark:border-gray-700': true,
+              },
+            )}
           >
             <CardHeader>
               <CardTitle className="text-orange">{card.title}</CardTitle>
