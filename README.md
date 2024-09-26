@@ -16,8 +16,9 @@
 </p>
 
 ## Overview
-
 Zenda AI is an innovative chatbot application that acts as an intelligent sales assistant, allowing users to easily integrate the chatbot into their websites. The app allows users to manage subscriptions, process payments and interact with customers in real time. With an easy-to-use interface, users can customise the chatbot to suit their needs.
+
+! <b>Application in development when I have available free time. Please send any comments to my email.</b> !
 
 ## ZendaAI App Features
 
