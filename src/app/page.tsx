@@ -38,9 +38,12 @@ const Home = (props: Props) => {
             Your AI powered sales assistant! Embed Zenda AI into any website
             with just a snippet of code!
           </p>
-          <Button className="bg-orange hover:bg-orange/90 font-bold text-white px-4">
+          <Link
+            href="/dashboard"
+            className="bg-orange px-4 py-2 rounded-sm text-white"
+          >
             Start For Free
-          </Button>
+          </Link>
           <Image
             src="/images/iphonecorinna.png"
             width={400}
