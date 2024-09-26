@@ -17,7 +17,7 @@
 
 ## Overview
 
-MicroTransAI is an innovative software project designed around the Next.js framework, leveraging modern web technologies for seamless language translation and transcription services. It supports user authentication, dynamic data interaction with MongoDB, and integrates with Azure AI services to facilitate real-time text and audio processing. The application ensures a responsive and accessible user interface, enriched with TailwindCSS for aesthetic consistency across devices. MicroTransAI enhances user engagement by providing translational history, audio transcription capabilities, and secure data management, making it a comprehensive solution for users needing immediate and accurate language translation services.
+Zenda AI is an innovative chatbot application that acts as an intelligent sales assistant, allowing users to easily integrate the chatbot into their websites. The app allows users to manage subscriptions, process payments and interact with customers in real time. With an easy-to-use interface, users can customise the chatbot to suit their needs.
 
 ## ZendaAI App Features
 
