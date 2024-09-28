@@ -1,31 +1,26 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
-// import PusherServer from 'pusher';
-// import PusherClient from 'pusher-js';
+import PusherServer from 'pusher';
+import PusherClient from 'pusher-js';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-//WIP: TO DO
-// export const pusherServer = {};
-// new pusherServer({
-//   appId: process.env.PUSHER_APP_ID as string,
-//   key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
-//   secret: process.env.PUSHER_APP_SECRET as string,
-//   cluster: 'mt1',
-//   useTLS: true,
-// });
+export const pusherServer = new PusherServer({
+  appId: process.env.NEXT_PUBLIC_PUSHER_APP_ID as string,
+  key: process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
+  secret: process.env.NEXT_PUBLIC_PUSHER_APP_SECRET as string,
+  cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTOR as string,
+  useTLS: true,
+});
 
-//WIP: TO DO
-// export const pusherClient = {};
-// new pusherClient(
-//   process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
-//   {
-//     cluster: 'mt1',
-//   },
-// );
-
+export const pusherClient = new PusherClient(
+  process.env.NEXT_PUBLIC_PUSHER_APP_KEY as string,
+  {
+    cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTOR as string,
+  },
+);
 export const extractUUIDFromString = (url: string) => {
   return url.match(
     /^[0-9a-f]{8}-?[0-9a-f]{4}-?[1-5][0-9a-f]{3}-?[89ab][0-9a-f]{3}-?[0-9a-f]{12}$/i,

@@ -1,5 +1,5 @@
 import { onAiChatBotAssistant, onGetCurrentChatBot } from '@/actions/bot';
-import { postToParent } from '@/lib/utils';
+import { postToParent, pusherClient } from '@/lib/utils';
 import {
   ChatBotMessageProps,
   ChatBotMessageSchema,
@@ -52,9 +52,9 @@ export const useChatBot = () => {
   >([]);
   const [onAiTyping, setOnAiTyping] = useState<boolean>(false);
   const [currentBotId, setCurrentBotId] = useState<string>();
-  // const [onRealTime, setOnRealTime] = useState<
-  //   { chatroom: string; mode: boolean } | undefined
-  // >(undefined);
+  const [onRealTime, setOnRealTime] = useState<
+    { chatroom: string; mode: boolean } | undefined
+  >(undefined);
 
   const onScrollToBottom = () => {
     messageWindowRef.current?.scroll({
@@ -112,15 +112,15 @@ export const useChatBot = () => {
     if (values.image.length) {
       console.log('IMAGE fROM ', values.image[0]);
       const uploaded = await upload.uploadFile(values.image[0]);
-      // if (!onRealTime?.mode) {
-      //   setOnChats((prev: any) => [
-      //     ...prev,
-      //     {
-      //       role: 'user',
-      //       content: uploaded.uuid,
-      //     },
-      //   ]);
-      // }
+      if (!onRealTime?.mode) {
+        setOnChats((prev: any) => [
+          ...prev,
+          {
+            role: 'user',
+            content: uploaded.uuid,
+          },
+        ]);
+      }
 
       console.log('🟡 RESPONSE FROM UC', uploaded.uuid);
       setOnAiTyping(true);
@@ -134,11 +134,11 @@ export const useChatBot = () => {
       if (response) {
         setOnAiTyping(false);
         if (response.live) {
-          // setOnRealTime((prev) => ({
-          //   ...prev,
-          //   chatroom: response.chatRoom,
-          //   mode: response.live,
-          // }));
+          setOnRealTime((prev) => ({
+            ...prev,
+            chatroom: response.chatRoom,
+            mode: response.live,
+          }));
         } else {
           setOnChats((prev: any) => [...prev, response.response]);
         }
@@ -147,15 +147,15 @@ export const useChatBot = () => {
     reset();
 
     if (values.content) {
-      // if (!onRealTime?.mode) {
-      //   setOnChats((prev: any) => [
-      //     ...prev,
-      //     {
-      //       role: 'user',
-      //       content: values.content,
-      //     },
-      //   ]);
-      // }
+      if (!onRealTime?.mode) {
+        setOnChats((prev: any) => [
+          ...prev,
+          {
+            role: 'user',
+            content: values.content,
+          },
+        ]);
+      }
 
       setOnAiTyping(true);
 
@@ -169,11 +169,11 @@ export const useChatBot = () => {
       if (response) {
         setOnAiTyping(false);
         if (response.live) {
-          // setOnRealTime((prev) => ({
-          //   ...prev,
-          //   chatroom: response.chatRoom,
-          //   mode: response.live,
-          // }));
+          setOnRealTime((prev) => ({
+            ...prev,
+            chatroom: response.chatRoom,
+            mode: response.live,
+          }));
         } else {
           setOnChats((prev: any) => [...prev, response.response]);
         }
@@ -192,43 +192,43 @@ export const useChatBot = () => {
     currentBot,
     loading,
     setOnChats,
-    // onRealTime,
+    onRealTime,
     errors,
   };
 };
 
-// export const useRealTime = (
-//   chatRoom: string,
-//   setChats: React.Dispatch<
-//     React.SetStateAction<
-//       {
-//         role: 'user' | 'assistant';
-//         content: string;
-//         link?: string | undefined;
-//       }[]
-//     >
-//   >,
-// ) => {
-//   const counterRef = useRef(1);
+export const useRealTime = (
+  chatRoom: string,
+  setChats: React.Dispatch<
+    React.SetStateAction<
+      {
+        role: 'user' | 'assistant';
+        content: string;
+        link?: string | undefined;
+      }[]
+    >
+  >,
+) => {
+  const counterRef = useRef(1);
 
-//   useEffect(() => {
-//     pusherClient.subscribe(chatRoom);
-//     pusherClient.bind('realtime-mode', (data: any) => {
-//       console.log('✅', data);
-//       if (counterRef.current !== 1) {
-//         setChats((prev: any) => [
-//           ...prev,
-//           {
-//             role: data.chat.role,
-//             content: data.chat.message,
-//           },
-//         ]);
-//       }
-//       counterRef.current += 1;
-//     });
-//     return () => {
-//       pusherClient.unbind('realtime-mode');
-//       pusherClient.unsubscribe(chatRoom);
-//     };
-//   }, []);
-// };
+  useEffect(() => {
+    pusherClient.subscribe(chatRoom);
+    pusherClient.bind('realtime-mode', (data: any) => {
+      console.log('✅', data);
+      if (counterRef.current !== 1) {
+        setChats((prev: any) => [
+          ...prev,
+          {
+            role: data.chat.role,
+            content: data.chat.message,
+          },
+        ]);
+      }
+      counterRef.current += 1;
+    });
+    return () => {
+      pusherClient.unbind('realtime-mode');
+      pusherClient.unsubscribe(chatRoom);
+    };
+  }, []);
+};

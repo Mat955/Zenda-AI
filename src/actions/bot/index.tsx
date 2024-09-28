@@ -2,7 +2,7 @@
 
 import { client } from '@/lib/prisma';
 import { extractEmailsFromString, extractURLfromString } from '@/lib/utils';
-// import { onRealTimeChat } from '../conversation';
+import { onRealTimeChat } from '../conversation';
 import { clerkClient } from '@clerk/nextjs';
 import { onMailer } from '../mailer';
 import OpenAi from 'openai';
@@ -162,12 +162,12 @@ export const onAiChatBotAssistant = async (
             author,
           );
 
-          // onRealTimeChat(
-          //   checkCustomer.customer[0].chatRoom[0].id,
-          //   message,
-          //   'user',
-          //   author,
-          // );
+          onRealTimeChat(
+            checkCustomer.customer[0].chatRoom[0].id,
+            message,
+            'user',
+            author,
+          );
 
           if (!checkCustomer.customer[0].chatRoom[0].mailed) {
             const user = await clerkClient.users.getUser(
